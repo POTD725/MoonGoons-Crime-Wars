@@ -16,14 +16,15 @@ var map_id := "prisoner_exchange"
 var scenario_id := "standard"
 var local_race := "authority"
 var slots: Array[Dictionary] = []
-var ai_difficulty := "Enforcer"
+var ai_difficulty := "standard"
 
 func configure(new_team_size: int, new_map_id: String, new_scenario_id: String, new_slots: Array[Dictionary], difficulty: String) -> void:
 	team_size = clampi(new_team_size, 2, 8)
 	map_id = new_map_id if PvpMaps.MAPS.has(new_map_id) else "breakwater_split"
 	scenario_id = new_scenario_id if SCENARIOS.has(new_scenario_id) else "standard"
 	slots = new_slots.duplicate(true)
-	ai_difficulty = difficulty
+	ai_difficulty = difficulty if GameDifficulty.LEVELS.has(difficulty) else "standard"
+	GameDifficulty.set_level(ai_difficulty)
 	local_race = _find_local_race()
 	pending = true
 
