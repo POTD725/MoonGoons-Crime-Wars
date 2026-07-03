@@ -11,6 +11,7 @@ config/features=PackedStringArray("4.7")
 [autoload]
 DevCheats="*res://dev_cheats.gd"
 CutsceneDirector="*res://cutscene_director.gd"
+CutsceneSupport="*res://cutscene_support.gd"
 
 [display]
 window/size/viewport_width=1600
