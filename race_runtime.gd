@@ -1,20 +1,20 @@
 extends Node
 
-const PLAYER_TEAM := "authority"
-const ENEMY_TEAM := "syndicate"
+const PLAYER_TEAM: String = "authority"
+const ENEMY_TEAM: String = "syndicate"
 
 var root: Node
-var root_id := -1
-var chosen_race := ""
-var chosen_rival := ""
-var passive_clock := 0.0
+var root_id: int = -1
+var chosen_race: String = ""
+var chosen_rival: String = ""
+var passive_clock: float = 0.0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_build_picker()
 
 func _process(delta: float) -> void:
-	var mission := _mission_root()
+	var mission: Node = _mission_root()
 	if mission == null:
 		return
 	if mission.get_instance_id() != root_id:
@@ -38,7 +38,7 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _mission_root() -> Node:
-	var current := get_tree().current_scene
+	var current: Node = get_tree().current_scene
 	if current != null and current.has_method("_spawn_unit") and current.has_method("_spawn_building"):
 		return current
 	return null
@@ -69,49 +69,65 @@ func _reset_mission(race_id: String, rival_id: String) -> void:
 	root.set("intel", 40 if race_id == "null_choir" else 10)
 	root.set("B", RaceSpecs.buildings_for(race_id, rival_id))
 	root.set("U", RaceSpecs.units_for(race_id, rival_id))
-
-	var map_data := PvpMaps.get_active()
-	var map_id := PvpMaps.active_map_id
+	var map_data: Dictionary = PvpMaps.get_active()
+	var map_id: String = str(PvpMaps.active_map_id)
 	root.set_meta("pvp_map_id", map_id)
-	root.set_meta("pvp_map_name", str(map_data["name"]))
+	root.set_meta("pvp_map_name", str(map_data.get("name", "Breakwater Split")))
 	for node_info in map_data.get("nodes", []):
 		root.call("_spawn_node", str(node_info[0]), node_info[1], int(node_info[2]))
-
-	var spawns: Array = map_data.get("spawns", [Vector2(-780,180), Vector2(780,-180)])
+	var spawns: Array = map_data.get("spawns", [Vector2(-780, 180), Vector2(780, -180)])
 	var player_spawn: Vector2 = spawns[0]
-	var enemy_spawn: Vector2 = spawns[1] if spawns.size() > 1 else Vector2(780,-180)
+	var enemy_spawn: Vector2 = spawns[1] if spawns.size() > 1 else Vector2(780, -180)
 	root.set("cam", player_spawn + Vector2(130, -40))
-
 	_tag(root.call("_spawn_building", "nexus", PLAYER_TEAM, player_spawn, true), race_id)
-	for offset in [Vector2(94,36), Vector2(20,105), Vector2(-72,100)]:
+	for offset: Vector2 in [Vector2(94, 36), Vector2(20, 105), Vector2(-72, 100)]:
 		_tag(root.call("_spawn_unit", "drone", PLAYER_TEAM, player_spawn + offset), race_id)
-	for offset in [Vector2(100,-66), Vector2(-92,-58)]:
+	for offset: Vector2 in [Vector2(100, -66), Vector2(-92, -58)]:
 		_tag(root.call("_spawn_unit", "deputy", PLAYER_TEAM, player_spawn + offset), race_id)
-	_tag(root.call("_spawn_unit", "hero", PLAYER_TEAM, player_spawn + Vector2(0,-105)), race_id)
+	_tag(root.call("_spawn_unit", "hero", PLAYER_TEAM, player_spawn + Vector2(0, -105)), race_id)
 	if race_id == "hollow_fang":
-		_tag(root.call("_spawn_unit", "shield", PLAYER_TEAM, player_spawn + Vector2(-128,30)), race_id)
+		_tag(root.call("_spawn_unit", "shield", PLAYER_TEAM, player_spawn + Vector2(-128, 30)), race_id)
 	elif race_id == "null_choir":
-		_tag(root.call("_spawn_unit", "deputy", PLAYER_TEAM, player_spawn + Vector2(-128,30)), race_id)
-
+		_tag(root.call("_spawn_unit", "deputy", PLAYER_TEAM, player_spawn + Vector2(-128, 30)), race_id)
 	_tag(root.call("_spawn_building", "syndicate_relay", ENEMY_TEAM, enemy_spawn, true), rival_id)
-	for offset in [Vector2(-105,56), Vector2(88,74), Vector2(102,-70)]:
+	for offset: Vector2 in [Vector2(-105, 56), Vector2(88, 74), Vector2(102, -70)]:
 		_tag(root.call("_spawn_unit", "raider", ENEMY_TEAM, enemy_spawn + offset), rival_id)
-	for offset in [Vector2(-55,-112), Vector2(132,-18)]:
+	for offset: Vector2 in [Vector2(-55, -112), Vector2(132, -18)]:
 		_tag(root.call("_spawn_unit", "hacker", ENEMY_TEAM, enemy_spawn + offset), rival_id)
-
 	_install_visual_layer()
 	_install_map_visual_layer(map_id)
-	root.call("flash", "MAP // %s  •  %s  •  %s resources" % [str(map_data["name"]), str(map_data["pace"]), str(map_data["resources"])], 8.0)
+	root.call("flash", "MAP // %s  •  %s  •  %s resources" % [str(map_data.get("name", "Breakwater Split")), str(map_data.get("pace", "Balanced")), str(map_data.get("resources", "Medium"))], 8.0)
 
 func _tag(entity: Dictionary, race_id: String) -> void:
 	if not entity.is_empty():
 		entity["race"] = race_id
 
 func _install_map_visual_layer(map_id: String) -> void:
-	var layer := root.get_node_or_null("PvpMapVisuals")
+	var layer: Node = root.get_node_or_null("PvpMapVisuals")
 	if layer == null:
-		var visual_script := load("res://pvp_map_visuals.gd")
+		var visual_script: Script = load("res://pvp_map_visuals.gd")
+		if visual_script == null:
+			return
 		layer = visual_script.new()
 		layer.name = "PvpMapVisuals"
 		root.add_child(layer)
 	layer.call("configure", root, map_id)
+
+# Hooks supplied by race_mode.gd. Empty defaults keep this parent script compilable.
+func _build_picker() -> void:
+	pass
+
+func _show_picker() -> void:
+	pass
+
+func _hide_picker() -> void:
+	pass
+
+func _apply_passive_income() -> void:
+	pass
+
+func _install_visual_layer() -> void:
+	pass
+
+func _start_faction_briefing(_race_id: String, _rival_id: String) -> void:
+	pass
