@@ -9,6 +9,7 @@ const CHECKS := [
 	"res://custom_match_runtime.gd",
 	"res://custom_match_ai.gd",
 	"res://strategic_ai_director.gd",
+	"res://mission_rule_guard.gd",
 	"res://free_roam.tscn",
 	"res://lan_lobby.tscn",
 	"res://player_gui.gd",
