@@ -43,12 +43,12 @@ func _draw_authority() -> void:
 	var moon: Vector2 = Vector2(size.x * 0.73, size.y * 0.30)
 	draw_circle(moon, 43.0, Color(0.36, 0.66, 0.86, 0.24))
 	draw_circle(moon + Vector2(16.0, -7.0), 43.0, Color(0.018, 0.042, 0.09, 0.98))
-	var base: Rect2 = Rect2(Vector2(46.0, size.y * 0.61), Vector2(size.x - 92.0, 35.0))
-	draw_rect(base, Color(accent.r, accent.g, accent.b, 0.22), true)
-	draw_rect(base, accent, false, 2.0)
+	var precinct_base: Rect2 = Rect2(Vector2(46.0, size.y * 0.61), Vector2(size.x - 92.0, 35.0))
+	draw_rect(precinct_base, Color(accent.r, accent.g, accent.b, 0.22), true)
+	draw_rect(precinct_base, accent, false, 2.0)
 	for index: int in 5:
-		var x: float = base.position.x + 20.0 + float(index) * 54.0
-		draw_rect(Rect2(Vector2(x, base.position.y + 10.0), Vector2(25.0, 12.0)), Color("d9f3ff"), true)
+		var x: float = precinct_base.position.x + 20.0 + float(index) * 54.0
+		draw_rect(Rect2(Vector2(x, precinct_base.position.y + 10.0), Vector2(25.0, 12.0)), Color("d9f3ff"), true)
 	var shield: PackedVector2Array = PackedVector2Array([
 		Vector2(size.x * 0.50, 35.0), Vector2(size.x * 0.66, 65.0), Vector2(size.x * 0.61, 129.0),
 		Vector2(size.x * 0.50, 156.0), Vector2(size.x * 0.39, 129.0), Vector2(size.x * 0.34, 65.0)
@@ -81,24 +81,24 @@ func _draw_cartel() -> void:
 	draw_string(ThemeDB.fallback_font, Vector2(0.0, size.y - 9.0), "CONTRABAND // FAST LOGISTICS", HORIZONTAL_ALIGNMENT_CENTER, int(size.x), 12, neon)
 
 func _draw_choir() -> void:
-	var signal: Color = Color("72f2bd")
+	var signal_color: Color = Color("72f2bd")
 	var center: Vector2 = Vector2(size.x * 0.50, size.y * 0.50)
 	for index: int in 4:
 		var radius: float = 24.0 + float(index) * 24.0
-		draw_arc(center, radius, -2.55, 0.75, 28, Color(signal.r, signal.g, signal.b, 0.20 + float(index) * 0.09), 2.0)
-		draw_arc(center, radius, 0.59, 3.72, 28, Color(signal.r, signal.g, signal.b, 0.20 + float(index) * 0.09), 2.0)
+		draw_arc(center, radius, -2.55, 0.75, 28, Color(signal_color.r, signal_color.g, signal_color.b, 0.20 + float(index) * 0.09), 2.0)
+		draw_arc(center, radius, 0.59, 3.72, 28, Color(signal_color.r, signal_color.g, signal_color.b, 0.20 + float(index) * 0.09), 2.0)
 	var tower: PackedVector2Array = PackedVector2Array([
 		Vector2(size.x * 0.50, 35.0), Vector2(size.x * 0.64, 154.0), Vector2(size.x * 0.36, 154.0)
 	])
-	draw_colored_polygon(tower, Color(signal.r, signal.g, signal.b, 0.24))
-	draw_polyline(tower, signal.lightened(0.22), 3.0, true)
+	draw_colored_polygon(tower, Color(signal_color.r, signal_color.g, signal_color.b, 0.24))
+	draw_polyline(tower, signal_color.lightened(0.22), 3.0, true)
 	draw_circle(Vector2(size.x * 0.50, 76.0), 14.0, Color("eafff6"))
-	draw_circle(Vector2(size.x * 0.50, 76.0), 6.0, signal)
+	draw_circle(Vector2(size.x * 0.50, 76.0), 6.0, signal_color)
 	for index: int in 5:
 		var angle: float = float(index) * TAU / 5.0 - PI * 0.5
 		var glyph: Vector2 = center + Vector2.from_angle(angle) * 85.0
-		draw_circle(glyph, 5.0, signal)
-	draw_string(ThemeDB.fallback_font, Vector2(0.0, size.y - 9.0), "SIGNAL // RECURSIVE NETWORK", HORIZONTAL_ALIGNMENT_CENTER, int(size.x), 12, signal)
+		draw_circle(glyph, 5.0, signal_color)
+	draw_string(ThemeDB.fallback_font, Vector2(0.0, size.y - 9.0), "SIGNAL // RECURSIVE NETWORK", HORIZONTAL_ALIGNMENT_CENTER, int(size.x), 12, signal_color)
 
 func _draw_fang() -> void:
 	var ember: Color = Color("ff9b62")
