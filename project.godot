@@ -1,6 +1,5 @@
 ; MoonGoons: Crime Wars
 ; Godot 4 RTS foundation
-; visual modules are mounted by the active game scene
 
 config_version=5
 
@@ -14,6 +13,7 @@ DevCheats="*res://dev_cheats.gd"
 CutsceneDirector="*res://cutscene_director.gd"
 CutsceneSupport="*res://cutscene_support.gd"
 CampaignData="*res://story_campaign.gd"
+GameProfile="*res://game_profile.gd"
 RaceCatalog="*res://race_catalog.gd"
 RaceSpecs="*res://race_specs.gd"
 RaceMode="*res://race_mode.gd"
@@ -35,6 +35,7 @@ TacticalMeshCatalog="*res://tactical_mesh_catalog.gd"
 DossierMeshPreview="*res://dossier_mesh_preview.gd"
 PlayerGUI="*res://player_gui.gd"
 CommandDeckArt="*res://command_deck_art_overlay.gd"
+DemoMissionDirector="*res://demo_mission_director.gd"
 ModeHub="*res://mode_hub.gd"
 
 [display]
