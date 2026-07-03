@@ -1,0 +1,24 @@
+name: Godot smoke test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  parse-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot 4.7 headless
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip wget
+          wget -q https://github.com/godotengine/godot/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip -O godot.zip
+          unzip -q godot.zip -d godot-bin
+          chmod +x godot-bin/Godot_v4.7-stable_linux.x86_64
+          echo "$PWD/godot-bin" >> $GITHUB_PATH
+      - name: Import and parse project
+        run: Godot_v4.7-stable_linux.x86_64 --headless --path . --editor --quit
+      - name: Run smoke test
+        run: Godot_v4.7-stable_linux.x86_64 --headless --path . --script res://tests/smoke_test.gd
