@@ -17,7 +17,6 @@ func _ready() -> void:
 	stream.buffer_length = 0.35
 	player = AudioStreamPlayer.new()
 	player.stream = stream
-	player.volume_db = -12.0
 	add_child(player)
 	player.play()
 	playback = player.get_stream_playback()
@@ -27,6 +26,8 @@ func play_cue(cue: String) -> void:
 		queued_cues.append(cue)
 
 func _process(_delta: float) -> void:
+	if player != null:
+		player.volume_db = linear_to_db(maxf(0.01, GameProfile.effects_volume)) - 13.0
 	if playback == null:
 		return
 	if current_age >= current_duration and not queued_cues.is_empty():
