@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="160" viewBox="0 0 760 160">
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#75d8ff"/><stop offset="1" stop-color="#d38cff"/></linearGradient></defs>
+  <g fill="none" stroke="url(#g)" stroke-width="5"><path d="M24 116C122 18 249 10 344 85c96 76 213 68 392-38"/><circle cx="80" cy="76" r="16"/><circle cx="672" cy="68" r="12"/></g>
+  <text x="380" y="102" text-anchor="middle" font-family="sans-serif" font-size="72" font-weight="800" letter-spacing="7" fill="#e8f8ff">MOONGOONS</text>
+  <text x="380" y="136" text-anchor="middle" font-family="sans-serif" font-size="17" letter-spacing="6" fill="#75d8ff">LUNAR CIVIC COMMAND</text>
+</svg>
