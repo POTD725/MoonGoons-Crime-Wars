@@ -1,49 +1,8 @@
-extends Node
+extends "res://race_runtime.gd"
+## Visual faction selector, passive economy, and compatibility hooks.
 
-const PLAYER_TEAM := "authority"
-const ENEMY_TEAM := "syndicate"
-
-var root: Node
-var root_id := -1
-var chosen_race := ""
-var chosen_rival := ""
 var picker: Control
 var status_label: Label
-var passive_clock := 0.0
-
-func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	_build_picker()
-
-func _process(delta: float) -> void:
-	var mission := _mission_root()
-	if mission == null:
-		return
-	if mission.get_instance_id() != root_id:
-		root = mission
-		root_id = mission.get_instance_id()
-		chosen_race = ""
-		chosen_rival = ""
-		passive_clock = 0.0
-		_show_picker()
-		return
-	if chosen_race.is_empty() or bool(root.get("finished")):
-		return
-	passive_clock += delta
-	if passive_clock >= 1.0:
-		passive_clock = 0.0
-		_apply_passive_income()
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F1:
-		_show_picker()
-		get_viewport().set_input_as_handled()
-
-func _mission_root() -> Node:
-	var current := get_tree().current_scene
-	if current != null and current.has_method("_spawn_unit") and current.has_method("_spawn_building"):
-		return current
-	return null
 
 func _show_picker() -> void:
 	if root == null:
@@ -53,59 +12,110 @@ func _show_picker() -> void:
 	picker.visible = true
 	status_label.text = "SELECT A FACTION  //  F1 REOPENS THIS SCREEN DURING TESTING"
 
-func _choose(race_id: String) -> void:
-	chosen_race = race_id
-	chosen_rival = RaceCatalog.get_rival(race_id)
-	_reset_mission(race_id, chosen_rival)
-	root.set_meta("race_selected", true)
-	root.set_meta("race_selecting", false)
+func _hide_picker() -> void:
 	picker.visible = false
-	get_tree().paused = false
-	_start_faction_briefing(race_id, chosen_rival)
 
-func _reset_mission(race_id: String, rival_id: String) -> void:
-	Engine.time_scale = 1.0
-	root.get("units").clear()
-	root.get("buildings").clear()
-	root.get("nodes").clear()
-	root.set("selected", [])
-	root.set("selected_building", -1)
-	root.set("next_id", 1)
-	root.set("build_kind", "")
-	root.set("finished", false)
-	root.set("victory", false)
-	root.set("credits", 520 if race_id == "lunar_cartel" else 440)
-	root.set("supplies", 230 if race_id == "hollow_fang" else 180)
-	root.set("intel", 40 if race_id == "null_choir" else 10)
-	root.set("B", RaceSpecs.buildings_for(race_id, rival_id))
-	root.set("U", RaceSpecs.units_for(race_id, rival_id))
+func _apply_passive_income() -> void:
+	if root == null or chosen_race.is_empty():
+		return
+	var finished_structures := 0
+	for building in root.get("buildings"):
+		if building.get("team", "") == PLAYER_TEAM and building.get("race", "") == chosen_race and bool(building.get("done", false)):
+			finished_structures += 1
+	var multiplier := max(1, finished_structures)
+	var gains := RaceCatalog.get_passive(chosen_race)
+	if gains.has("credits"):
+		root.set("credits", int(root.get("credits")) + int(gains["credits"]) * multiplier)
+	if gains.has("supplies"):
+		root.set("supplies", int(root.get("supplies")) + int(gains["supplies"]) * multiplier)
+	if gains.has("intel"):
+		root.set("intel", int(root.get("intel")) + int(gains["intel"]) * multiplier)
 
-	root.call("_spawn_node", "ore", Vector2(-550, 210), 980)
-	root.call("_spawn_node", "ore", Vector2(-420, -95), 720)
-	root.call("_spawn_node", "evidence", Vector2(90, 280), 480)
-	root.call("_spawn_node", "ore", Vector2(210, -155), 930)
-	root.call("_spawn_node", "evidence", Vector2(480, 150), 520)
+func _install_visual_layer() -> void:
+	var layer := root.get_node_or_null("RaceVisuals")
+	if layer == null:
+		var visual_script := load("res://race_visuals.gd")
+		layer = visual_script.new()
+		layer.name = "RaceVisuals"
+		root.add_child(layer)
+	layer.set("mission_root", root)
 
-	_tag(root.call("_spawn_building", "nexus", PLAYER_TEAM, Vector2(-260, 145), true), race_id)
-	for position in [Vector2(-166,180), Vector2(-215,245), Vector2(-310,255)]:
-		_tag(root.call("_spawn_unit", "drone", PLAYER_TEAM, position), race_id)
-	for position in [Vector2(-145,92), Vector2(-332,78)]:
-		_tag(root.call("_spawn_unit", "deputy", PLAYER_TEAM, position), race_id)
-	_tag(root.call("_spawn_unit", "hero", PLAYER_TEAM, Vector2(-250, 55)), race_id)
-	if race_id == "hollow_fang":
-		_tag(root.call("_spawn_unit", "shield", PLAYER_TEAM, Vector2(-370, 170)), race_id)
-	elif race_id == "null_choir":
-		_tag(root.call("_spawn_unit", "deputy", PLAYER_TEAM, Vector2(-365, 170)), race_id)
+func _start_faction_briefing(race_id: String, rival_id: String) -> void:
+	var director := get_node_or_null("/root/CutsceneDirector")
+	if director == null:
+		return
+	if bool(director.get("is_playing")):
+		director.call("_end_sequence")
+	var player_name := str(RaceCatalog.RACES[race_id]["hero"])
+	var rival_name := str(RaceCatalog.RACES[rival_id]["hero"])
+	var lines := [
+		{"name":player_name, "faction":RaceCatalog.get_name(race_id), "side":"authority", "text":player_name + " enters Breakwater. " + RaceCatalog.get_construction(race_id)},
+		{"name":rival_name, "faction":RaceCatalog.get_name(rival_id), "side":"syndicate", "text":rival_name + ": a side has been chosen. The moon will remember the cost."}
+	]
+	director.call("_play_sequence", lines, "res://audio/mission_deploy.wav")
 
-	_tag(root.call("_spawn_building", "syndicate_relay", ENEMY_TEAM, Vector2(780, -250), true), rival_id)
-	for position in [Vector2(675,-180), Vector2(845,-145), Vector2(895,-330)]:
-		_tag(root.call("_spawn_unit", "raider", ENEMY_TEAM, position), rival_id)
-	for position in [Vector2(740,-385), Vector2(990,-250)]:
-		_tag(root.call("_spawn_unit", "hacker", ENEMY_TEAM, position), rival_id)
+func _build_picker() -> void:
+	var canvas := CanvasLayer.new()
+	canvas.layer = 35
+	canvas.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(canvas)
+	picker = Control.new()
+	picker.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	picker.mouse_filter = Control.MOUSE_FILTER_STOP
+	canvas.add_child(picker)
 
-	_install_visual_layer()
-	root.call("flash", "%s deployed. %s" % [RaceCatalog.get_name(race_id), RaceCatalog.get_construction(race_id)], 8.0)
+	var backdrop := ColorRect.new()
+	backdrop.color = Color(0.008, 0.012, 0.035, 0.96)
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	picker.add_child(backdrop)
 
-func _tag(entity: Dictionary, race_id: String) -> void:
-	if not entity.is_empty():
-		entity["race"] = race_id
+	var title := Label.new()
+	title.text = "MOONGOONS: CRIME WARS"
+	title.position = Vector2(80, 54)
+	title.size = Vector2(1440, 48)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 38)
+	title.add_theme_color_override("font_color", Color("ecf4ff"))
+	picker.add_child(title)
+
+	status_label = Label.new()
+	status_label.position = Vector2(80, 112)
+	status_label.size = Vector2(1440, 28)
+	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	status_label.add_theme_font_size_override("font_size", 15)
+	status_label.add_theme_color_override("font_color", Color("a8c7ef"))
+	picker.add_child(status_label)
+
+	var race_ids := ["authority", "lunar_cartel", "null_choir", "hollow_fang"]
+	for index in race_ids.size():
+		var race_id: String = race_ids[index]
+		var race: Dictionary = RaceCatalog.RACES[race_id]
+		var card := Button.new()
+		card.position = Vector2(85 + index * 380, 185)
+		card.size = Vector2(330, 440)
+		card.text = "%s\n\n%s\n\n%s\n\nBUILD METHOD\n%s\n\nHERO // %s\n\nCLICK TO DEPLOY" % [race["name"], race["subtitle"], race["style"], race["construction"], race["hero"]]
+		card.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		card.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		card.add_theme_font_size_override("font_size", 15)
+		card.add_theme_color_override("font_color", Color("f2f7ff"))
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color(str(race["accent"])).darkened(0.72)
+		style.border_color = Color(str(race["accent"]))
+		style.set_border_width_all(3)
+		style.corner_radius_top_left = 16
+		style.corner_radius_top_right = 16
+		style.corner_radius_bottom_left = 16
+		style.corner_radius_bottom_right = 16
+		card.add_theme_stylebox_override("normal", style)
+		card.pressed.connect(_choose.bind(race_id))
+		picker.add_child(card)
+
+	var footer := Label.new()
+	footer.text = "THE AUTHORITY BUILDS ORDER.  THE CARTEL BUILDS OPPORTUNITY.  THE CHOIR GROWS SIGNAL.  THE FANG BUILDS WAR."
+	footer.position = Vector2(80, 670)
+	footer.size = Vector2(1440, 28)
+	footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	footer.add_theme_font_size_override("font_size", 14)
+	footer.add_theme_color_override("font_color", Color("c4d4e9"))
+	picker.add_child(footer)
+	picker.visible = false
