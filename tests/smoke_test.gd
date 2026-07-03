@@ -1,35 +1,18 @@
 extends SceneTree
 
-const CHECKS := [
+const CHECKS: Array[String] = [
 	"res://main.tscn",
-	"res://main.gd",
-	"res://race_mode.gd",
-	"res://custom_game.tscn",
-	"res://custom_game.gd",
-	"res://custom_match_runtime.gd",
-	"res://custom_match_ai.gd",
-	"res://strategic_ai_director.gd",
-	"res://mission_rule_guard.gd",
-	"res://free_roam.tscn",
-	"res://lan_lobby.tscn",
-	"res://player_gui.gd",
-	"res://command_deck_art_overlay.gd",
-	"res://world_silhouette_layer.gd",
-	"res://combat_feedback.gd",
-	"res://audio_feedback.gd",
+	"res://main_safe.gd",
+	"res://dev_console_light.gd",
 	"res://game_profile.gd",
-	"res://settings_console.gd",
-	"res://pause_console.gd",
-	"res://launch_screen.gd",
-	"res://campaign_board.gd",
-	"res://demo_mission_director.gd",
-	"res://game_art_library.gd",
-	"res://tactical_mesh_catalog.gd",
-	"res://dossier_mesh_preview.gd",
-	"res://officer_roster_texture.gd",
-	"res://officer_roster.gd",
-	"res://assets/graphics/moongoons_logo.svg",
-	"res://assets/graphics/darkside_moon_sigil.svg"
+	"res://faction_catalog.gd",
+	"res://match_state.gd",
+	"res://faction_controller_match.gd",
+	"res://difficulty_profile.gd",
+	"res://difficulty_console.gd",
+	"res://hud.gd",
+	"res://custom_game_safe.gd",
+	"res://skirmish_screen.tscn"
 ]
 
 var failures: Array[String] = []
@@ -38,13 +21,13 @@ func _init() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
-	for path in CHECKS:
+	for path: String in CHECKS:
 		var resource: Resource = load(path)
 		if resource == null:
 			failures.append(path)
-	var main_scene: PackedScene = load("res://main.tscn")
-	if main_scene != null:
-		var instance: Node = main_scene.instantiate()
+	var scene: PackedScene = load("res://main.tscn")
+	if scene != null:
+		var instance: Node = scene.instantiate()
 		root.add_child(instance)
 		await process_frame
 		instance.queue_free()
