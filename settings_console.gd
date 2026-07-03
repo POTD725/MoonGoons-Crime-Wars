@@ -20,7 +20,7 @@ func _input(event: InputEvent) -> void:
 
 func _build() -> void:
 	canvas = CanvasLayer.new()
-	canvas.layer = 58
+	canvas.layer = 66
 	canvas.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(canvas)
 	panel = Panel.new()
@@ -46,19 +46,21 @@ func _build() -> void:
 	title.add_theme_color_override("font_color", Color("8fe9ff"))
 	panel.add_child(title)
 	master_slider = _slider("MASTER VOLUME", 92, GameProfile.master_volume)
+	master_slider.value_changed.connect(_on_master_changed)
 	effects_slider = _slider("EFFECTS VOLUME", 166, GameProfile.effects_volume)
+	effects_slider.value_changed.connect(_on_effects_changed)
 	fullscreen_toggle = CheckButton.new()
 	fullscreen_toggle.text = "FULLSCREEN WINDOW"
 	fullscreen_toggle.position = Vector2(54, 242)
 	fullscreen_toggle.size = Vector2(450, 38)
 	fullscreen_toggle.button_pressed = GameProfile.fullscreen
-	fullscreen_toggle.toggled.connect(func(value: bool): GameProfile.set_fullscreen(value); _refresh())
+	fullscreen_toggle.toggled.connect(_on_fullscreen_toggled)
 	panel.add_child(fullscreen_toggle)
 	var reset := Button.new()
 	reset.text = "RESET CAMPAIGN PROGRESS"
 	reset.position = Vector2(54, 300)
 	reset.size = Vector2(452, 46)
-	reset.pressed.connect(func(): GameProfile.reset_campaign(); _refresh())
+	reset.pressed.connect(_reset_campaign)
 	panel.add_child(reset)
 	status = Label.new()
 	status.position = Vector2(54, 360)
@@ -72,7 +74,7 @@ func _build() -> void:
 	close.text = "RETURN TO COMMAND"
 	close.position = Vector2(54, 414)
 	close.size = Vector2(452, 38)
-	close.pressed.connect(func(): panel.visible = false; get_tree().paused = false)
+	close.pressed.connect(_close)
 	panel.add_child(close)
 	panel.visible = false
 	_refresh()
@@ -92,12 +94,30 @@ func _slider(label_text: String, y: float, value: float) -> HSlider:
 	slider.max_value = 1.0
 	slider.step = 0.05
 	slider.value = value
-	if label_text.begins_with("MASTER"):
-		slider.value_changed.connect(func(new_value: float): GameProfile.master_volume = new_value; GameProfile.save_profile(); _refresh())
-	else:
-		slider.value_changed.connect(func(new_value: float): GameProfile.effects_volume = new_value; GameProfile.save_profile(); _refresh())
 	panel.add_child(slider)
 	return slider
+
+func _on_master_changed(value: float) -> void:
+	GameProfile.master_volume = value
+	GameProfile.save_profile()
+	_refresh()
+
+func _on_effects_changed(value: float) -> void:
+	GameProfile.effects_volume = value
+	GameProfile.save_profile()
+	_refresh()
+
+func _on_fullscreen_toggled(value: bool) -> void:
+	GameProfile.set_fullscreen(value)
+	_refresh()
+
+func _reset_campaign() -> void:
+	GameProfile.reset_campaign()
+	_refresh()
+
+func _close() -> void:
+	panel.visible = false
+	get_tree().paused = false
 
 func _refresh() -> void:
 	if status == null:
