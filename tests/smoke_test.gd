@@ -6,6 +6,7 @@ const CHECKS: Array[String] = [
 	"res://dev_console_light.gd",
 	"res://game_profile.gd",
 	"res://faction_catalog.gd",
+	"res://faction_card_art.gd",
 	"res://match_state.gd",
 	"res://faction_controller_match.gd",
 	"res://difficulty_profile.gd",
