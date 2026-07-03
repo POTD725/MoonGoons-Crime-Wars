@@ -21,30 +21,37 @@ func _process(delta: float) -> void:
 
 func _apply_rts_difficulty(root: Node) -> void:
 	var ready_for_scaling := bool(root.get_meta("race_selected", false)) or bool(root.get_meta("custom_match", false))
-	if not ready_for_scaling or bool(root.get_meta("difficulty_applied", false)):
+	if not ready_for_scaling:
 		return
 	var player_health := GameDifficulty.multiplier("player_health")
 	var player_damage := GameDifficulty.multiplier("player_damage")
 	var ai_health := GameDifficulty.multiplier("ai_health")
 	var ai_damage := GameDifficulty.multiplier("ai_damage")
 	for unit in root.get("units"):
+		if bool(unit.get("difficulty_scaled", false)):
+			continue
 		var is_cpu := bool(unit.get("cpu", false)) or unit.get("team", "") == "syndicate"
 		var health_scale := ai_health if is_cpu else player_health
 		var damage_scale := ai_damage if is_cpu else player_damage
 		unit["hp"] = float(unit["hp"]) * health_scale
 		unit["max"] = float(unit["max"]) * health_scale
 		unit["damage"] = max(0, int(round(float(unit["damage"]) * damage_scale)))
+		unit["difficulty_scaled"] = true
 	for building in root.get("buildings"):
+		if bool(building.get("difficulty_scaled", false)):
+			continue
 		var is_cpu := bool(building.get("cpu", false)) or building.get("team", "") == "syndicate"
 		var health_scale := ai_health if is_cpu else player_health
 		building["hp"] = float(building["hp"]) * health_scale
 		building["max"] = float(building["max"]) * health_scale
-	var resource_scale := GameDifficulty.multiplier("start_multiplier")
-	root.set("credits", int(round(float(root.get("credits")) * resource_scale)))
-	root.set("supplies", int(round(float(root.get("supplies")) * resource_scale)))
-	root.set("intel", int(round(float(root.get("intel")) * resource_scale)))
-	root.set_meta("difficulty_applied", true)
-	root.call("flash", "DIFFICULTY // " + GameDifficulty.get_name(), 3.0)
+		building["difficulty_scaled"] = true
+	if not bool(root.get_meta("difficulty_resources_applied", false)):
+		var resource_scale := GameDifficulty.multiplier("start_multiplier")
+		root.set("credits", int(round(float(root.get("credits")) * resource_scale)))
+		root.set("supplies", int(round(float(root.get("supplies")) * resource_scale)))
+		root.set("intel", int(round(float(root.get("intel")) * resource_scale)))
+		root.set_meta("difficulty_resources_applied", true)
+		root.call("flash", "DIFFICULTY // " + GameDifficulty.get_name(), 3.0)
 
 func _apply_free_roam_difficulty(scene: Node, delta: float) -> void:
 	var patrol_speed := GameDifficulty.multiplier("patrol_speed")
