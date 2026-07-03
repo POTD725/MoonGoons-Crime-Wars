@@ -1,5 +1,5 @@
 extends Node
-## Press F2 anywhere to move between story operations, free roam, and LAN party.
+## Press F2 anywhere to move between story operations, custom battles, free roam, and LAN party.
 
 var overlay: Control
 
@@ -30,7 +30,7 @@ func _build_overlay() -> void:
 
 	var title := Label.new()
 	title.text = "MOONGOONS: CRIME WARS // MODE HUB"
-	title.position = Vector2(180, 110)
+	title.position = Vector2(180, 54)
 	title.size = Vector2(1240, 48)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 34)
@@ -38,21 +38,22 @@ func _build_overlay() -> void:
 	overlay.add_child(title)
 
 	var subtitle := Label.new()
-	subtitle.text = "F2 closes this hub. Choose your kind of trouble."
-	subtitle.position = Vector2(180, 166)
+	subtitle.text = "F2 closes this hub. F4 adjusts global difficulty. Choose your kind of trouble."
+	subtitle.position = Vector2(180, 109)
 	subtitle.size = Vector2(1240, 26)
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	subtitle.add_theme_font_size_override("font_size", 16)
 	subtitle.add_theme_color_override("font_color", Color("a8c4e5"))
 	overlay.add_child(subtitle)
 
-	_add_mode_button("STORY OPERATIONS", "Faction RTS battles, campaign missions, cutscenes, and recon branches.", Vector2(230, 275), "res://main.tscn", Color("8fe9ff"))
-	_add_mode_button("FREE ROAM", "Explore the Fracture Belt with a recon vessel. Scan sites, uncover risks, and collect campaign clues.", Vector2(630, 275), "res://free_roam.tscn", Color("72f2bd"))
-	_add_mode_button("LAN PARTY", "Host or join a local network lobby, use ready slots and chat, then launch the LAN recon session.", Vector2(1030, 275), "res://lan_lobby.tscn", Color("ff9b62"))
+	_add_mode_button("STORY OPERATIONS", "Faction RTS battles, campaign missions, cutscenes, and recon branches.", Vector2(260, 190), "res://main.tscn", Color("8fe9ff"))
+	_add_mode_button("CUSTOM GAME", "Build 2v2, 4v4, 6v6, or 8v8 matches with maps, races, scenarios, and CPU slots.", Vector2(840, 190), "res://custom_game.tscn", Color("ffcf74"))
+	_add_mode_button("FREE ROAM", "Explore the Fracture Belt, scan recon sites, and recruit an automated alliance partner.", Vector2(260, 475), "res://free_roam.tscn", Color("72f2bd"))
+	_add_mode_button("LAN PARTY", "Host or join a local network lobby, use chat, and launch co-op recon sessions.", Vector2(840, 475), "res://lan_lobby.tscn", Color("ff9b62"))
 
 	var footer := Label.new()
-	footer.text = "LOCAL DEVELOPMENT BUILD // F9 developer console // F1 faction selection in RTS mode"
-	footer.position = Vector2(180, 650)
+	footer.text = "F1 faction selection  •  F3 battlefield archive  •  F4 difficulty  •  F6 alliances  •  F8 chat  •  F9 developer console"
+	footer.position = Vector2(180, 785)
 	footer.size = Vector2(1240, 28)
 	footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	footer.add_theme_font_size_override("font_size", 14)
@@ -63,7 +64,7 @@ func _build_overlay() -> void:
 func _add_mode_button(title: String, description: String, position: Vector2, target_scene: String, accent: Color) -> void:
 	var button := Button.new()
 	button.position = position
-	button.size = Vector2(340, 270)
+	button.size = Vector2(500, 230)
 	button.text = title + "\n\n" + description + "\n\nCLICK TO OPEN"
 	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	button.alignment = HORIZONTAL_ALIGNMENT_CENTER
