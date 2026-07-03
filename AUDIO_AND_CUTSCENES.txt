@@ -1,0 +1,28 @@
+MOONGOONS: CRIME WARS — AUDIO + CUTSCENES
+
+AUDIO INSTALL
+1. From the project root, run:
+   python generate_audio_pack.py
+
+2. Confirm that these files exist:
+   audio/mission_deploy.wav
+   audio/mission_alert.wav
+   audio/mission_victory.wav
+   audio/mission_failure.wav
+   audio/cutscene_ambience.wav
+   audio/voice_authority_bleep.wav
+   audio/voice_syndicate_bleep.wav
+
+3. Open the project in Godot and press Play.
+
+CUTSCENE FLOW
+- Mission start: Chief Nova, Captain Luna, and Mox Vell brief Operation Breakwater.
+- First Syndicate reinforcement wave: Vexa Null and Captain Luna exchange radio dialogue.
+- Victory: Chief Nova closes the operation while Mox Vell gives the criminal-side response.
+- Defeat: Vexa Null claims the breach; Chief Nova begins the counter-hunt.
+
+CONTROLS
+- Left-click or press Space / Enter to reveal the full dialogue line or advance to the next speech bubble.
+- The game pauses during a dialogue scene and resumes after the final line.
+
+The dialogue characters are pulled from the MoonGoons and Dark Side cast already defined in the connected games. The current portraits are original procedural placeholders, designed to be replaced with the final character art once those portraits are stored directly in this project.
