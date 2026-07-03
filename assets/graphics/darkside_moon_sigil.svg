@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="moon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff79c6"/>
+      <stop offset="0.55" stop-color="#7f67ff"/>
+      <stop offset="1" stop-color="#15152f"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="256" height="256" rx="42" fill="#0b0d18"/>
+  <circle cx="128" cy="128" r="96" fill="url(#moon)" stroke="#f8b5ec" stroke-width="6"/>
+  <circle cx="92" cy="82" r="20" fill="#392655" opacity=".55"/>
+  <circle cx="171" cy="73" r="13" fill="#392655" opacity=".55"/>
+  <circle cx="177" cy="158" r="24" fill="#392655" opacity=".5"/>
+  <path d="M72 128 Q128 78 184 128 Q128 177 72 128Z" fill="#0b0d18" opacity=".92"/>
+  <path d="M83 128 Q101 111 115 128 Q101 145 83 128Z" fill="#5dfff1" filter="url(#glow)"/>
+  <path d="M141 128 Q155 111 173 128 Q155 145 141 128Z" fill="#5dfff1" filter="url(#glow)"/>
+  <path d="M100 172 Q128 195 156 172" fill="none" stroke="#0b0d18" stroke-width="9" stroke-linecap="round"/>
+  <path d="M128 28 L143 53 L128 78 L113 53Z" fill="#ffc857"/>
+</svg>
