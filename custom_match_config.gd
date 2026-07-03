@@ -23,7 +23,7 @@ func configure(new_team_size: int, new_map_id: String, new_scenario_id: String, 
 	map_id = new_map_id if PvpMaps.MAPS.has(new_map_id) else "breakwater_split"
 	scenario_id = new_scenario_id if SCENARIOS.has(new_scenario_id) else "standard"
 	slots = new_slots.duplicate(true)
-	ai_difficulty = difficulty if GameDifficulty.LEVELS.has(difficulty) else "standard"
+	ai_difficulty = _normalize_difficulty(difficulty)
 	GameDifficulty.set_level(ai_difficulty)
 	local_race = _find_local_race()
 	pending = true
@@ -41,6 +41,11 @@ func total_slots() -> int:
 
 func scenario() -> Dictionary:
 	return SCENARIOS.get(scenario_id, SCENARIOS["standard"])
+
+func _normalize_difficulty(value: String) -> String:
+	var key := value.to_lower().strip_edges()
+	var aliases := {"cadet":"easy", "easy":"easy", "enforcer":"standard", "standard":"standard", "marshal":"hard", "hard":"hard", "nightmare":"nightmare"}
+	return str(aliases.get(key, "standard"))
 
 func _find_local_race() -> String:
 	for slot in slots:
