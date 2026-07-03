@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="220" viewBox="0 0 420 220">
+  <rect width="420" height="220" rx="22" fill="#20162d"/>
+  <path d="M88 171V87l122-48 122 48v84z" fill="#3b2455" stroke="#d38cff" stroke-width="4"/>
+  <path d="M138 171v-54h144v54" fill="#1b2945" stroke="#75d8ff" stroke-width="4"/>
+  <path d="M210 58v84M165 78h90" stroke="#ffdd68" stroke-width="7"/>
+  <circle cx="210" cy="93" r="19" fill="#ffdd68" opacity=".9"/>
+  <text x="24" y="34" font-family="sans-serif" font-size="19" font-weight="700" fill="#e8f8ff">CHIEF OFFICE</text>
+</svg>
