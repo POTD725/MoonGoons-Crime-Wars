@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="220" viewBox="0 0 420 220">
+  <rect width="420" height="220" rx="22" fill="#261822"/>
+  <path d="M55 169h310V64H55z" fill="#41222d" stroke="#ff746c" stroke-width="4"/>
+  <g stroke="#ffb74d" stroke-width="8"><path d="M98 92h88l-28 24h-60zM234 92h88l-28 24h-60z"/><path d="M110 139h82M228 139h82"/></g>
+  <circle cx="210" cy="154" r="18" fill="#ff746c"/><path d="M202 141l20 13-20 13z" fill="#08101f"/>
+  <text x="24" y="34" font-family="sans-serif" font-size="19" font-weight="700" fill="#e8f8ff">ARMORY</text>
+</svg>
