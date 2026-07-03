@@ -1,16 +1,34 @@
 extends "res://race_runtime.gd"
-## Visual faction selector, passive economy, and compatibility hooks.
+## Visual faction selector, custom-battle bridge, and compatibility hooks.
 
 var picker: Control
 var status_label: Label
+var custom_launch_queued := false
 
 func _show_picker() -> void:
 	if root == null:
+		return
+	if CustomMatchConfig.is_pending():
+		if not custom_launch_queued:
+			custom_launch_queued = true
+			call_deferred("_launch_custom_match")
 		return
 	root.set_meta("race_selecting", true)
 	get_tree().paused = true
 	picker.visible = true
 	status_label.text = "SELECT A FACTION  //  F1 REOPENS THIS SCREEN DURING TESTING"
+
+func _launch_custom_match() -> void:
+	custom_launch_queued = false
+	if root == null or not CustomMatchConfig.consume():
+		return
+	chosen_race = CustomMatchConfig.local_race
+	chosen_rival = RaceCatalog.get_rival(chosen_race)
+	picker.visible = false
+	get_tree().paused = false
+	CustomMatchRuntime.launch(root)
+	_install_visual_layer()
+	_start_faction_briefing(chosen_race, chosen_rival)
 
 func _hide_picker() -> void:
 	picker.visible = false
@@ -49,8 +67,8 @@ func _start_faction_briefing(race_id: String, rival_id: String) -> void:
 	var player_name := str(RaceCatalog.RACES[race_id]["hero"])
 	var rival_name := str(RaceCatalog.RACES[rival_id]["hero"])
 	var lines := [
-		{"name":player_name, "faction":RaceCatalog.get_name(race_id), "side":"authority", "text":player_name + " enters Breakwater. " + RaceCatalog.get_construction(race_id)},
-		{"name":rival_name, "faction":RaceCatalog.get_name(rival_id), "side":"syndicate", "text":rival_name + ": a side has been chosen. The moon will remember the cost."}
+		{"name":player_name, "faction":RaceCatalog.get_name(race_id), "side":"authority", "text":player_name + " enters the operation. " + RaceCatalog.get_construction(race_id)},
+		{"name":rival_name, "faction":RaceCatalog.get_name(rival_id), "side":"syndicate", "text":rival_name + ": your faction has chosen a side. The moon will remember the cost."}
 	]
 	director.call("_play_sequence", lines, "res://audio/mission_deploy.wav")
 
