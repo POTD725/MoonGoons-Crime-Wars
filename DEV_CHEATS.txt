@@ -1,0 +1,72 @@
+MOONGOONS: CRIME WARS — DEVELOPER CONSOLE
+
+Open / close: F9
+Type a command and press Enter.
+
+CORE RESOURCES
+help
+  Show this list inside the game.
+
+give 500 100 25
+  Add Credits, Supplies, and Intel. Amounts are optional.
+
+resources
+  Set Credits, Supplies, and Intel to 9,999.
+
+infinite
+  Toggle infinite resources.
+
+god
+  Toggle Authority invulnerability.
+
+heal
+  Restore all Authority unit and structure health.
+
+UNIT TESTING
+spawn drone 5
+spawn deputy 8
+spawn shield 4
+spawn raider 8 syndicate
+spawn hacker 3 syndicate
+  Spawn units at the mouse cursor. Default team is Authority for drones/deputies/shields and Syndicate for raiders/hackers.
+
+STRUCTURE TESTING
+build nexus
+build armory
+build relay
+build medbay
+build bay
+build cells
+build syndicate_relay syndicate
+  Complete a structure at the mouse cursor. These do not deduct resources.
+
+MISSION TESTING
+wave
+  Spawn a full Syndicate attack wave from the enemy relay.
+
+clear enemy
+clear authority
+  Remove all units and structures belonging to the chosen side.
+
+win
+  Destroy the Syndicate Relay and trigger mission victory.
+
+lose
+  Destroy the Authority Command Nexus and trigger mission failure.
+
+reveal
+  Deploy a temporary Authority drone near the enemy relay to lift fog around it.
+
+speed 0.5
+speed 2
+speed 4
+  Change the game time scale. Valid range: 0.10x to 4.00x.
+
+status
+  Print current resources, entity counts, cheat states, and time scale.
+
+reload
+  Restart the active mission scene.
+
+NOTE
+This is a local developer test console. Remove the DevCheats autoload from project.godot before creating a public competitive or multiplayer release.
