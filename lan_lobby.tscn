@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://lan_lobby.gd" id="1_lan_lobby"]
+[ext_resource type="Script" path="res://lan_lobby_safe.gd" id="1_lan_lobby"]
 
 [node name="LanLobby" type="Control"]
 layout_mode = 3
