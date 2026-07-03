@@ -1,5 +1,6 @@
 ; MoonGoons: Crime Wars
 ; Godot 4 RTS foundation
+; visual modules are mounted by the active game scene
 
 config_version=5
 
