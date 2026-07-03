@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <defs><linearGradient id="dark" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#191727"/><stop offset="1" stop-color="#08090f"/></linearGradient></defs>
+  <rect width="960" height="420" fill="url(#dark)"/>
+  <g stroke="#d8ff56" stroke-opacity=".30" fill="none"><path d="M0 70H960M0 140H960M0 210H960M0 280H960M0 350H960"/><path d="M80 0V420M160 0V420M240 0V420M320 0V420M400 0V420M480 0V420M560 0V420M640 0V420M720 0V420M800 0V420M880 0V420"/></g>
+  <g stroke="#a277ff" stroke-width="4" fill="#201d30"><rect x="80" y="70" width="215" height="106" rx="10"/><rect x="330" y="70" width="250" height="106" rx="10"/><rect x="615" y="70" width="245" height="106" rx="10"/><rect x="80" y="225" width="185" height="108" rx="10"/><rect x="300" y="225" width="255" height="108" rx="10"/><rect x="590" y="225" width="270" height="108" rx="10"/></g>
+  <g fill="#ff5d91"><circle cx="130" cy="123" r="11"/><circle cx="375" cy="123" r="11"/><circle cx="662" cy="123" r="11"/><circle cx="130" cy="278" r="11"/><circle cx="350" cy="278" r="11"/><circle cx="640" cy="278" r="11"/></g>
+  <g fill="#f0e6d0" font-family="monospace" font-size="14"><text x="153" y="128">COMMAND NEST</text><text x="398" y="128">CHOP BAY</text><text x="685" y="128">FORGERY LAB</text><text x="153" y="283">BLACK CLINIC</text><text x="373" y="283">WHISPER BAR</text><text x="663" y="283">BLACK VAULT</text></g>
+  <text x="38" y="40" fill="#d8ff56" font-family="monospace" font-size="15">BROKEN MOON DEPOT // CONCEALED ARCHITECTURE MAP</text>
+  <path d="M290 123H330M580 123H615M265 278H300M555 278H590" stroke="#d8ff56" stroke-width="5" stroke-dasharray="9 8"/>
+</svg>
