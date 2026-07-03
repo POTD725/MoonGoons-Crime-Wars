@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="220" viewBox="0 0 420 220">
+  <rect width="420" height="220" rx="22" fill="#101d3d"/>
+  <path d="M72 173h276" stroke="#75d8ff" stroke-width="5"/><path d="M126 172V102h168v70" fill="#152d55" stroke="#75d8ff" stroke-width="4"/>
+  <path d="M196 53h28v45l35 57c8 14-2 22-16 22h-56c-14 0-24-8-16-22l35-57V53z" fill="#ac8cff" stroke="#e8f8ff" stroke-width="3"/>
+  <path d="M185 139h60" stroke="#75f0d5" stroke-width="9"/><circle cx="302" cy="86" r="20" fill="#75f0d5" opacity=".75"/>
+  <text x="24" y="34" font-family="sans-serif" font-size="19" font-weight="700" fill="#e8f8ff">RESEARCH LAB</text>
+</svg>
