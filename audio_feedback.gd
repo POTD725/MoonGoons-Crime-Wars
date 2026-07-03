@@ -1,13 +1,13 @@
 extends Node
-## Procedural confirmation and alert tones. No external audio dependency.
+## Procedural confirmation and alert tones. Kept standalone so it can be enabled later.
 
 var player: AudioStreamPlayer
 var playback: AudioStreamGeneratorPlayback
 var stream: AudioStreamGenerator
-var last_note := ""
-var tone_hz := 0.0
-var tone_left := 0.0
-var phase := 0.0
+var last_note: String = ""
+var tone_hz: float = 0.0
+var tone_left: float = 0.0
+var phase: float = 0.0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -16,17 +16,16 @@ func _ready() -> void:
 	stream.buffer_length = 0.25
 	player = AudioStreamPlayer.new()
 	player.stream = stream
-	player.volume_db = linear_to_db(maxf(0.01, GameProfile.effects_volume))
 	add_child(player)
 	player.play()
 	playback = player.get_stream_playback()
 
-func _process(delta: float) -> void:
-	if player != null:
+func _process(_delta: float) -> void:
+	if player != null and GameProfile != null:
 		player.volume_db = linear_to_db(maxf(0.01, GameProfile.effects_volume))
 	var current: Node = get_tree().current_scene
 	if current != null and current.has_method("flash"):
-		var note := str(current.get("note", ""))
+		var note: String = str(current.get("note"))
 		if not note.is_empty() and note != last_note:
 			last_note = note
 			if "complete" in note.to_lower():
@@ -35,19 +34,19 @@ func _process(delta: float) -> void:
 				queue_tone(180.0, 0.16)
 			else:
 				queue_tone(520.0, 0.08)
-	_fill(delta)
+	_fill()
 
 func queue_tone(frequency: float, duration: float) -> void:
 	tone_hz = frequency
 	tone_left = duration
 	phase = 0.0
 
-func _fill(delta: float) -> void:
+func _fill() -> void:
 	if playback == null:
 		return
 	var frames: int = playback.get_frames_available()
-	for index in frames:
-		var sample := 0.0
+	for _index: int in frames:
+		var sample: float = 0.0
 		if tone_left > 0.0:
 			phase += TAU * tone_hz / stream.mix_rate
 			sample = sin(phase) * 0.11
