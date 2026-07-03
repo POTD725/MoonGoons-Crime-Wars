@@ -6,6 +6,12 @@ The playable demo uses an original **lunar command-and-crime** visual language: 
 
 The current vertical slice contains in-engine illustrated faction cards, procedural troop silhouettes, animated buildings, dockyard props, construction scaffolds, projectiles, impacts, and synthesized tactical sounds. These are designed as stable placeholders for higher-fidelity original art, not as borrowed content from any other game.
 
+## Runtime source-art bridge
+
+The `assets/graphics/darkside/` folder now contains original SVG source art for the faction selector and Breakwater intelligence presentation. On the supported Godot runtime path, `art_scene_overlay.gd` reads the SVG source through `FileAccess`, rasterizes it into an in-memory `ImageTexture`, and displays it without relying on Godot's importer cache. This keeps the art layer independent from a deleted or regenerated `.godot` folder.
+
+If a platform cannot rasterize SVG at runtime, the gameplay core still starts and the art layer silently stays hidden. The source files remain available for later PNG sprite-sheet export.
+
 ## Asset layout
 
 ```text
