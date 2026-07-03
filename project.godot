@@ -18,6 +18,7 @@ GameDifficulty="*res://difficulty_profile.gd"
 DifficultyMenu="*res://difficulty_console.gd"
 RtsAudio="*res://rts_audio.gd"
 ResponseText="*res://response_text.gd"
+MissionClock="*res://mission_clock.gd"
 PlayerGUI="*res://hud.gd"
 PausePanel="*res://tactical_menu.gd"
 
