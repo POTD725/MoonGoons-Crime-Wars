@@ -111,9 +111,10 @@ func _draw_fang() -> void:
 	])
 	draw_colored_polygon(rig, Color(ember.r, ember.g, ember.b, 0.30))
 	draw_polyline(rig, ember.lightened(0.24), 3.0, true)
-	for x: float in [92.0, 238.0]:
-		draw_circle(Vector2(x, 171.0), 17.0, Color("182033"))
-		draw_arc(Vector2(x, 171.0), 17.0, 0.0, TAU, 16, ember, 2.4)
+	for wheel_value in [92.0, 238.0]:
+		var wheel_x: float = float(wheel_value)
+		draw_circle(Vector2(wheel_x, 171.0), 17.0, Color("182033"))
+		draw_arc(Vector2(wheel_x, 171.0), 17.0, 0.0, TAU, 16, ember, 2.4)
 	var claw: PackedVector2Array = PackedVector2Array([
 		Vector2(135.0, 80.0), Vector2(156.0, 37.0), Vector2(164.0, 82.0), Vector2(190.0, 40.0),
 		Vector2(184.0, 91.0), Vector2(219.0, 62.0), Vector2(196.0, 112.0)
