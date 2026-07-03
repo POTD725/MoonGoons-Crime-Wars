@@ -70,32 +70,48 @@ func _reset_mission(race_id: String, rival_id: String) -> void:
 	root.set("B", RaceSpecs.buildings_for(race_id, rival_id))
 	root.set("U", RaceSpecs.units_for(race_id, rival_id))
 
-	root.call("_spawn_node", "ore", Vector2(-550, 210), 980)
-	root.call("_spawn_node", "ore", Vector2(-420, -95), 720)
-	root.call("_spawn_node", "evidence", Vector2(90, 280), 480)
-	root.call("_spawn_node", "ore", Vector2(210, -155), 930)
-	root.call("_spawn_node", "evidence", Vector2(480, 150), 520)
+	var map_data := PvpMaps.get_active()
+	var map_id := PvpMaps.active_map_id
+	root.set_meta("pvp_map_id", map_id)
+	root.set_meta("pvp_map_name", str(map_data["name"]))
+	for node_info in map_data.get("nodes", []):
+		root.call("_spawn_node", str(node_info[0]), node_info[1], int(node_info[2]))
 
-	_tag(root.call("_spawn_building", "nexus", PLAYER_TEAM, Vector2(-260, 145), true), race_id)
-	for position in [Vector2(-166,180), Vector2(-215,245), Vector2(-310,255)]:
-		_tag(root.call("_spawn_unit", "drone", PLAYER_TEAM, position), race_id)
-	for position in [Vector2(-145,92), Vector2(-332,78)]:
-		_tag(root.call("_spawn_unit", "deputy", PLAYER_TEAM, position), race_id)
-	_tag(root.call("_spawn_unit", "hero", PLAYER_TEAM, Vector2(-250, 55)), race_id)
+	var spawns: Array = map_data.get("spawns", [Vector2(-780,180), Vector2(780,-180)])
+	var player_spawn: Vector2 = spawns[0]
+	var enemy_spawn: Vector2 = spawns[1] if spawns.size() > 1 else Vector2(780,-180)
+	root.set("cam", player_spawn + Vector2(130, -40))
+
+	_tag(root.call("_spawn_building", "nexus", PLAYER_TEAM, player_spawn, true), race_id)
+	for offset in [Vector2(94,36), Vector2(20,105), Vector2(-72,100)]:
+		_tag(root.call("_spawn_unit", "drone", PLAYER_TEAM, player_spawn + offset), race_id)
+	for offset in [Vector2(100,-66), Vector2(-92,-58)]:
+		_tag(root.call("_spawn_unit", "deputy", PLAYER_TEAM, player_spawn + offset), race_id)
+	_tag(root.call("_spawn_unit", "hero", PLAYER_TEAM, player_spawn + Vector2(0,-105)), race_id)
 	if race_id == "hollow_fang":
-		_tag(root.call("_spawn_unit", "shield", PLAYER_TEAM, Vector2(-370, 170)), race_id)
+		_tag(root.call("_spawn_unit", "shield", PLAYER_TEAM, player_spawn + Vector2(-128,30)), race_id)
 	elif race_id == "null_choir":
-		_tag(root.call("_spawn_unit", "deputy", PLAYER_TEAM, Vector2(-365, 170)), race_id)
+		_tag(root.call("_spawn_unit", "deputy", PLAYER_TEAM, player_spawn + Vector2(-128,30)), race_id)
 
-	_tag(root.call("_spawn_building", "syndicate_relay", ENEMY_TEAM, Vector2(780, -250), true), rival_id)
-	for position in [Vector2(675,-180), Vector2(845,-145), Vector2(895,-330)]:
-		_tag(root.call("_spawn_unit", "raider", ENEMY_TEAM, position), rival_id)
-	for position in [Vector2(740,-385), Vector2(990,-250)]:
-		_tag(root.call("_spawn_unit", "hacker", ENEMY_TEAM, position), rival_id)
+	_tag(root.call("_spawn_building", "syndicate_relay", ENEMY_TEAM, enemy_spawn, true), rival_id)
+	for offset in [Vector2(-105,56), Vector2(88,74), Vector2(102,-70)]:
+		_tag(root.call("_spawn_unit", "raider", ENEMY_TEAM, enemy_spawn + offset), rival_id)
+	for offset in [Vector2(-55,-112), Vector2(132,-18)]:
+		_tag(root.call("_spawn_unit", "hacker", ENEMY_TEAM, enemy_spawn + offset), rival_id)
 
 	_install_visual_layer()
-	root.call("flash", "%s deployed. %s" % [RaceCatalog.get_name(race_id), RaceCatalog.get_construction(race_id)], 8.0)
+	_install_map_visual_layer(map_id)
+	root.call("flash", "MAP // %s  •  %s  •  %s resources" % [str(map_data["name"]), str(map_data["pace"]), str(map_data["resources"])], 8.0)
 
 func _tag(entity: Dictionary, race_id: String) -> void:
 	if not entity.is_empty():
 		entity["race"] = race_id
+
+func _install_map_visual_layer(map_id: String) -> void:
+	var layer := root.get_node_or_null("PvpMapVisuals")
+	if layer == null:
+		var visual_script := load("res://pvp_map_visuals.gd")
+		layer = visual_script.new()
+		layer.name = "PvpMapVisuals"
+		root.add_child(layer)
+	layer.call("configure", root, map_id)
