@@ -1,6 +1,3 @@
-; MoonGoons: Crime Wars
-; Godot 4 RTS foundation
-
 config_version=5
 
 [application]
@@ -9,43 +6,15 @@ run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.7")
 
 [autoload]
-DevCheats="*res://dev_cheats.gd"
-CutsceneDirector="*res://cutscene_director.gd"
-CutsceneSupport="*res://cutscene_support.gd"
+DevCheats="*res://dev_console_light.gd"
 CampaignData="*res://story_campaign.gd"
 GameProfile="*res://game_profile.gd"
 RaceCatalog="*res://faction_catalog.gd"
-RaceSpecs="*res://race_specs.gd"
-RaceMode="*res://race_mode.gd"
-PvpMaps="*res://pvp_maps.gd"
-MapSelector="*res://map_selector.gd"
-CustomMatchConfig="*res://custom_match_config.gd"
-CustomMatchRuntime="*res://custom_match_runtime.gd"
-CustomMatchAI="*res://custom_match_ai.gd"
-StrategicAI="*res://strategic_ai_director.gd"
-MissionRuleGuard="*res://mission_rule_guard.gd"
+MatchState="*res://match_state.gd"
+RaceMode="*res://faction_controller_match.gd"
 GameDifficulty="*res://difficulty_profile.gd"
-DifficultyRuntime="*res://difficulty_runtime.gd"
-DifficultyMenu="*res://difficulty_menu.gd"
-FreeRoamAlliance="*res://free_roam_alliance.gd"
-LanSession="*res://lan_session.gd"
-InGameChat="*res://in_game_chat.gd"
-GameArtLibrary="*res://game_art_library.gd"
-OfficerRosterTexture="*res://officer_roster_texture.gd"
-OfficerRoster="*res://officer_roster.gd"
-TacticalMeshCatalog="*res://tactical_mesh_catalog.gd"
-DossierMeshPreview="*res://dossier_mesh_preview.gd"
-WorldSilhouette="*res://world_silhouette_layer.gd"
-CombatFeedback="*res://combat_feedback.gd"
-AudioFeedback="*res://audio_feedback.gd"
-SettingsConsole="*res://settings_console.gd"
-PauseConsole="*res://pause_console.gd"
-CampaignBoard="*res://campaign_board.gd"
-PlayerGUI="*res://player_gui.gd"
-CommandDeckArt="*res://command_deck_art_overlay.gd"
-DemoMissionDirector="*res://demo_mission_director.gd"
-LaunchScreen="*res://launch_screen.gd"
-ModeHub="*res://mode_hub.gd"
+DifficultyMenu="*res://difficulty_console.gd"
+PlayerGUI="*res://hud.gd"
 
 [display]
 window/size/viewport_width=1600
