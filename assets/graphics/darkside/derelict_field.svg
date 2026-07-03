@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="520" viewBox="0 0 1400 520">
+  <defs>
+    <radialGradient id="void" cx="58%" cy="45%" r="80%"><stop stop-color="#29243c"/><stop offset=".55" stop-color="#12111d"/><stop offset="1" stop-color="#07070d"/></radialGradient>
+    <linearGradient id="hull" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9893a2"/><stop offset=".45" stop-color="#4a4757"/><stop offset="1" stop-color="#1a1923"/></linearGradient>
+    <linearGradient id="rift" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#d8ff56"/><stop offset=".5" stop-color="#a277ff"/><stop offset="1" stop-color="#ff5d91"/></linearGradient>
+  </defs>
+  <rect width="1400" height="520" fill="url(#void)"/>
+  <g fill="#f0e6d0" opacity=".52"><circle cx="68" cy="76" r="2"/><circle cx="170" cy="124" r="1"/><circle cx="265" cy="64" r="1.4"/><circle cx="440" cy="116" r="2"/><circle cx="590" cy="71" r="1"/><circle cx="740" cy="98" r="1.7"/><circle cx="920" cy="57" r="1"/><circle cx="1110" cy="126" r="2"/><circle cx="1290" cy="70" r="1.4"/><circle cx="1325" cy="224" r="1"/><circle cx="1080" cy="350" r="1"/></g>
+  <ellipse cx="1110" cy="80" rx="310" ry="155" fill="#a277ff" opacity=".12"/><ellipse cx="195" cy="445" rx="340" ry="132" fill="#ff5d91" opacity=".08"/>
+  <path d="M0 400C250 355 420 470 650 410S1040 320 1400 420" fill="none" stroke="#a277ff" stroke-opacity=".2" stroke-width="2"/>
+  <g transform="translate(470 238) rotate(-12)">
+    <path d="M0 56L130 6L355 27L448 79L350 135L123 124Z" fill="url(#hull)" stroke="#c6c3cc" stroke-opacity=".7" stroke-width="4"/>
+    <path d="M89 56L200 44L304 61L344 91L221 111L112 97Z" fill="#0d0d15" opacity=".82"/>
+    <path d="M24 61L150 28M312 33L423 76" stroke="#d8ff56" stroke-opacity=".55" stroke-width="5" stroke-dasharray="12 10"/>
+    <path d="M182 8L209 -39L240 12M318 30L355 -5L381 48" fill="none" stroke="#756f7b" stroke-width="7"/>
+    <circle cx="339" cy="77" r="10" fill="#ff5d91"/><circle cx="133" cy="78" r="8" fill="#a277ff"/>
+  </g>
+  <g fill="#454050" stroke="#9a93a4" stroke-opacity=".45"><path d="M185 270l38-14 35 21-26 31-44-5z"/><path d="M302 148l31-9 23 22-15 28-37-6z"/><path d="M1042 256l48-18 39 25-27 37-58-7z"/><path d="M1186 375l28-13 28 18-15 27-38-4z"/><path d="M885 124l20-8 18 15-12 22-25-5z"/></g>
+  <g transform="translate(1030 112)"><circle cx="75" cy="75" r="62" fill="none" stroke="url(#rift)" stroke-width="5"/><circle cx="75" cy="75" r="42" fill="none" stroke="#d8ff56" stroke-opacity=".4" stroke-width="3" stroke-dasharray="7 8"/><path d="M75 0V150M0 75H150" stroke="#f0e6d0" stroke-opacity=".18"/><circle cx="75" cy="75" r="6" fill="#d8ff56"/></g>
+  <g transform="translate(62 64)"><rect width="305" height="120" fill="#15131f" fill-opacity=".85" stroke="#d8ff56" stroke-opacity=".72"/><text x="17" y="28" fill="#d8ff56" font-family="monospace" font-size="13">DEEP SPACE SALVAGE // SIGNAL ACQUIRED</text><text x="17" y="62" fill="#f0e6d0" font-family="sans-serif" font-size="25" font-weight="800">UNIDENTIFIED DERELICT</text><text x="17" y="92" fill="#aba9bb" font-family="monospace" font-size="12">HULL: PARTIAL • CREW: UNKNOWN • VALUE: RISING</text></g>
+  <path d="M0 486H1400" stroke="url(#rift)" stroke-opacity=".65" stroke-width="3"/>
+</svg>
