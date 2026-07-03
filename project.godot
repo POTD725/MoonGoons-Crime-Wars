@@ -27,6 +27,7 @@ DifficultyMenu="*res://difficulty_menu.gd"
 FreeRoamAlliance="*res://free_roam_alliance.gd"
 LanSession="*res://lan_session.gd"
 InGameChat="*res://in_game_chat.gd"
+PlayerGUI="*res://player_gui.gd"
 ModeHub="*res://mode_hub.gd"
 
 [display]
