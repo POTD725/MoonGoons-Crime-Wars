@@ -1,6 +1,6 @@
 extends Node
 ## Lightweight computer-player director for custom local skirmishes.
-## CPU bases reinforce periodically and CPU authority units receive attack orders.
+## CPU bases reinforce periodically and CPU units receive attack orders.
 
 var root: Node
 var active := false
@@ -31,11 +31,8 @@ func _process(delta: float) -> void:
 		_reinforce_cpu_bases()
 
 func _production_interval() -> float:
-	var difficulty := CustomMatchConfig.ai_difficulty
-	if difficulty == "Cadet": return 15.0
-	if difficulty == "Marshal": return 7.5
-	if difficulty == "Nightmare": return 5.0
-	return 10.0
+	# Easy has breathing room; Nightmare builds armies at a brisk lunar gallop.
+	return 10.0 * GameDifficulty.multiplier("ai_interval", 1.0)
 
 func _assign_cpu_orders() -> void:
 	for unit in root.get("units"):
@@ -60,14 +57,22 @@ func _reinforce_cpu_bases() -> void:
 			continue
 		var kind := "shield" if randf() < _shield_chance() else "deputy"
 		var offset := Vector2(randf_range(-110.0, 110.0), randf_range(-100.0, 100.0))
-		CustomMatchRuntime.spawn_reinforcement(root, slot, base["pos"] + offset, kind)
+		var unit := CustomMatchRuntime.spawn_reinforcement(root, slot, base["pos"] + offset, kind)
+		_apply_cpu_scaling(unit)
 
 func _shield_chance() -> float:
-	var difficulty := CustomMatchConfig.ai_difficulty
-	if difficulty == "Cadet": return 0.18
-	if difficulty == "Marshal": return 0.45
-	if difficulty == "Nightmare": return 0.62
-	return 0.30
+	match GameDifficulty.active_id:
+		"easy": return 0.18
+		"hard": return 0.45
+		"nightmare": return 0.62
+		_: return 0.30
+
+func _apply_cpu_scaling(unit: Dictionary) -> void:
+	var health_multiplier := GameDifficulty.multiplier("ai_health")
+	var damage_multiplier := GameDifficulty.multiplier("ai_damage")
+	unit["hp"] = float(unit["hp"]) * health_multiplier
+	unit["max"] = float(unit["max"]) * health_multiplier
+	unit["damage"] = max(1, int(round(float(unit["damage"]) * damage_multiplier)))
 
 func _nearest_enemy(unit: Dictionary) -> Dictionary:
 	var nearest := {}
