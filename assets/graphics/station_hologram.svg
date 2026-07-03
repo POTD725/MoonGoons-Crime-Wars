@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360">
+  <rect width="720" height="360" rx="28" fill="#0a1730"/>
+  <g opacity=".45" stroke="#1e4c72" stroke-width="2"><path d="M0 70h720M0 145h720M0 220h720M0 295h720M110 0v360M240 0v360M370 0v360M500 0v360M630 0v360"/></g>
+  <circle cx="555" cy="84" r="34" fill="#d7f1ff" opacity=".92"/><circle cx="555" cy="84" r="56" fill="none" stroke="#75d8ff" stroke-width="3" opacity=".4"/>
+  <g fill="#173b59" stroke="#75d8ff" stroke-width="4"><path d="M150 185l76-62 126 6 87 65-96 55-123-7z"/><path d="M225 123l-14-65 62 37 79-17 24 51z"/><path d="M405 148l91-27 54 62-111 10z"/><path d="M156 196l-62 57 102 11 45-45z"/><path d="M441 196l79 42-77 35-59-44z"/></g>
+  <g fill="#75f0d5"><circle cx="278" cy="171" r="8"/><circle cx="354" cy="193" r="8"/><circle cx="445" cy="175" r="8"/></g>
+  <text x="36" y="44" font-family="sans-serif" font-size="18" font-weight="700" fill="#75d8ff">STATION HOLOGRAM // LIVE</text>
+  <text x="36" y="330" font-family="sans-serif" font-size="16" fill="#b8d4e9">MoonGoons Civil Precinct / Crater District</text>
+</svg>
