@@ -16,7 +16,10 @@ CampaignData="*res://story_campaign.gd"
 RaceCatalog="*res://race_catalog.gd"
 RaceSpecs="*res://race_specs.gd"
 RaceMode="*res://race_mode.gd"
+PvpMaps="*res://pvp_maps.gd"
+MapSelector="*res://map_selector.gd"
 LanSession="*res://lan_session.gd"
+InGameChat="*res://in_game_chat.gd"
 ModeHub="*res://mode_hub.gd"
 
 [display]
