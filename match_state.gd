@@ -1,6 +1,6 @@
 extends Node
 
-var ready: bool = false
+var match_ready: bool = false
 var player_race: String = "authority"
 var opposing_race: String = "lunar_cartel"
 var selected_map: String = "Breakwater Split"
@@ -16,13 +16,13 @@ func set_match(race_id: String, opponent_id: String, map_label: String, mode_lab
 	level_id = difficulty_label
 	bots = clampi(bot_count, 1, 7)
 	GameDifficulty.set_level(level_id)
-	ready = true
+	match_ready = true
 
 func is_ready() -> bool:
-	return ready
+	return match_ready
 
 func take_ready() -> bool:
-	if not ready:
+	if not match_ready:
 		return false
-	ready = false
+	match_ready = false
 	return true
