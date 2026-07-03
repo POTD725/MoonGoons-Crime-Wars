@@ -166,4 +166,4 @@ func _callsign() -> String:
 	return LanSession.display_name.left(20)
 
 func _is_lan_active() -> bool:
-	return multiplayer.multiplayer_peer != null and not multiplayer.multiplayer_peer is OfflineMultiplayerPeer
+	return multiplayer.multiplayer_peer != null and not (multiplayer.multiplayer_peer is OfflineMultiplayerPeer)
