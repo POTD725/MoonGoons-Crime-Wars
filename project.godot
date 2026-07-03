@@ -29,6 +29,7 @@ LanSession="*res://lan_session.gd"
 InGameChat="*res://in_game_chat.gd"
 GameArtLibrary="*res://game_art_library.gd"
 PlayerGUI="*res://player_gui.gd"
+CommandDeckArt="*res://command_deck_art_overlay.gd"
 ModeHub="*res://mode_hub.gd"
 
 [display]
