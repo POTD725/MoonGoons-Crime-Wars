@@ -11,8 +11,7 @@ func _ready() -> void:
 	canvas.layer = 0
 	canvas.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(canvas)
-	painter = Node2D.new()
-	painter.set_script(WorldPainter)
+	painter = WorldPainter.new()
 	canvas.add_child(painter)
 
 func _process(_delta: float) -> void:
