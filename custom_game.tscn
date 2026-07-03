@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://custom_game.gd" id="1_custom_game"]
+[ext_resource type="Script" path="res://custom_game_difficulty.gd" id="1_custom_game"]
 
 [node name="CustomGame" type="Control"]
 layout_mode = 3
