@@ -20,8 +20,8 @@ DifficultyMenu="*res://difficulty_console.gd"
 RtsAudio="*res://rts_audio.gd"
 ResponseText="*res://response_text.gd"
 MissionClock="*res://mission_clock.gd"
-FieldSupport="*res://operations_control.gd"
-PlayerGUI="*res://grouped_command_hud.gd"
+FieldSupport="*res://force_control.gd"
+PlayerGUI="*res://force_hud.gd"
 PausePanel="*res://tactical_menu.gd"
 
 [display]
