@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://defense_factory_layer.gd" id="1_moonfront"]
+[ext_resource type="Script" path="res://repair_crew_layer.gd" id="1_moonfront"]
 
 [node name="CrimeWars" type="Node2D"]
 script = ExtResource("1_moonfront")
