@@ -25,7 +25,7 @@ MissionClock="*res://mission_clock.gd"
 SkinBank="*res://sprite_skin_bank_safe.gd"
 SkinProjectExporter="*res://skin_project_exporter.gd"
 FieldSupport="*res://force_control.gd"
-PlayerGUI="*res://force_hud.gd"
+PlayerGUI="*res://minimap_hud.gd"
 PausePanel="*res://tactical_menu.gd"
 BattlefieldSafety="*res://battlefield_spawn_safety.gd"
 
