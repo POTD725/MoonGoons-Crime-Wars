@@ -33,7 +33,8 @@ func _order_selected(world_point: Vector2) -> void:
 				continue
 			unit["order"] = "harvest"
 			unit["target_id"] = resource_index
-			unit["cargo_type"] = resource_type
+			if int(unit.get("carrying", 0)) <= 0:
+				unit["cargo_type"] = resource_type
 			unit["harvest_clock"] = 0.0
 			assigned += 1
 		if assigned > 0:
@@ -47,7 +48,7 @@ func _update_harvest(unit: Dictionary, delta: float) -> void:
 	var node_index: int = int(unit.get("target_id", -1))
 	if node_index < 0 or node_index >= nodes.size():
 		if int(unit.get("carrying", 0)) > 0:
-			_return_drone_cargo(unit, "ore", delta)
+			_return_drone_cargo(unit, str(unit.get("cargo_type", "ore")), delta)
 		else:
 			unit["order"] = "idle"
 		return
@@ -124,7 +125,8 @@ func _return_drone_cargo(unit: Dictionary, cargo_type: String, delta: float) -> 
 
 func _draw_resources() -> void:
 	super._draw_resources()
-	for resource: Dictionary in nodes:
+	for resource_index in range(nodes.size()):
+		var resource: Dictionary = nodes[resource_index]
 		if int(resource.get("amount", 0)) <= 0:
 			continue
 		var resource_position: Vector2 = resource.get("pos", Vector2.ZERO) as Vector2
@@ -134,9 +136,7 @@ func _draw_resources() -> void:
 		for unit: Dictionary in units:
 			if str(unit.get("kind", "")) != "drone" or str(unit.get("order", "")) != "harvest":
 				continue
-			if int(unit.get("target_id", -1)) < 0 or int(unit.get("target_id", -1)) >= nodes.size():
-				continue
-			if nodes[int(unit.get("target_id", -1))] != resource:
+			if int(unit.get("target_id", -1)) != resource_index:
 				continue
 			var drone_position: Vector2 = unit.get("pos", Vector2.ZERO) as Vector2
 			draw_dashed_harvest_link(drone_position, resource_position, marker_color)
