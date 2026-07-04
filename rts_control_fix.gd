@@ -13,6 +13,7 @@ var build_kind: String = ""
 var support_canvas: CanvasLayer
 var support_panel: Panel
 var prep_text: Label
+var rally_label: Label
 var help_text: Label
 var healing_notice: float = 0.0
 
@@ -111,7 +112,8 @@ func _setup_scene(scene: Node) -> void:
 	for building: Dictionary in scene.get("buildings") as Array:
 		if str(building.get("team", "")) == "authority" and (str(building.get("kind", "")) == "nexus" or str(building.get("kind", "")) == "armory"):
 			if not building.has("rally_point"):
-				building["rally_point"] = building.get("pos", Vector2.ZERO) as Vector2 + Vector2(150.0, 65.0)
+				var building_position: Vector2 = building.get("pos", Vector2.ZERO) as Vector2
+				building["rally_point"] = building_position + Vector2(150.0, 65.0)
 	scene.call("flash", "PREPARATION WINDOW // Build, train, set rally points, and defend for 10:00.", 4.0)
 
 func _update_protection(scene: Node) -> void:
@@ -228,7 +230,9 @@ func _train(scene: Node, kind: String) -> void:
 	var units: Array = scene.get("units") as Array
 	if units.size() > before:
 		var new_unit: Dictionary = units[units.size() - 1] as Dictionary
-		new_unit["rally_target"] = producer.get("rally_point", producer.get("pos", Vector2.ZERO) as Vector2 + Vector2(150.0, 65.0)) as Vector2
+		var fallback_rally: Vector2 = producer.get("pos", Vector2.ZERO) as Vector2
+		fallback_rally += Vector2(150.0, 65.0)
+		new_unit["rally_target"] = producer.get("rally_point", fallback_rally) as Vector2
 		new_unit["rally_pending"] = true
 
 func _set_rally_from_selection(scene: Node, screen_point: Vector2) -> bool:
