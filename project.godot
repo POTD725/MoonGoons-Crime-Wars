@@ -27,7 +27,7 @@ SkinBank="*res://sprite_skin_bank_safe.gd"
 CoreArtBank="*res://core_png_art_bank.gd"
 SkinProjectExporter="*res://skin_project_exporter.gd"
 FieldSupport="*res://crime_wars_control.gd"
-PlayerGUI="*res://crime_wars_hud.gd"
+PlayerGUI="*res://crime_wars_hud_compact.gd"
 PausePanel="*res://tactical_menu.gd"
 BattlefieldSafety="*res://battlefield_spawn_safety.gd"
 
