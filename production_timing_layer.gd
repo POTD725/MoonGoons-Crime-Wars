@@ -38,13 +38,7 @@ func _train(kind: String) -> void:
 		return
 	credits -= cost
 	var production_time: float = maxf(SPAWN_INTERVAL_SECONDS, float(spec.get("time", 0.0)))
-	queue.append({
-		"kind":kind,
-		"name":str(spec.get("name", kind)),
-		"elapsed":0.0,
-		"duration":production_time,
-		"cost":cost
-	})
+	queue.append({"kind":kind, "name":str(spec.get("name", kind)), "elapsed":0.0, "duration":production_time, "cost":cost})
 	production_queues[producer_id] = queue
 	var queue_count: int = queue.size()
 	flash(str(spec.get("name", "Unit")) + " queued // %d item(s) waiting. Deployments launch 10 seconds apart." % queue_count, 2.6)
@@ -56,10 +50,7 @@ func _update_production_queues(delta: float) -> void:
 		var producer_id: int = int(producer_key)
 		var producer: Dictionary = _entity(producer_id)
 		var queue: Array = production_queues.get(producer_id, []) as Array
-		if producer.is_empty() or not bool(producer.get("done", false)):
-			invalid_producers.append(producer_id)
-			continue
-		if queue.is_empty():
+		if producer.is_empty() or not bool(producer.get("done", false)) or queue.is_empty():
 			invalid_producers.append(producer_id)
 			continue
 		var active_entry: Dictionary = queue[0] as Dictionary
@@ -155,6 +146,12 @@ func _draw_resources() -> void:
 		var maximum: int = maxi(1, int(resource.get("max", amount)))
 		var position: Vector2 = resource.get("pos", Vector2.ZERO) as Vector2
 		var resource_type: String = str(resource.get("type", "ore"))
-		var label: String = "ORE %d/%d" % [amount, maximum] if resource_type == "ore" else "INTEL %d/%d" % [amount, maximum]
-		var label_color: Color = Color("65eaff") if resource_type == "ore" else Color("ffca69")
-		draw_string(font, position + Vector2(-55.0, 76.0), label, HORIZONTAL_ALIGNMENT_CENTER, 110.0, 12, label_color)
+		var label: String = "ORE %d/%d" % [amount, maximum]
+		var label_color: Color = Color("65eaff")
+		if resource_type == "evidence":
+			label = "EVIDENCE %d/%d" % [amount, maximum]
+			label_color = Color("ffca69")
+		elif resource_type == "alloy":
+			label = "ALLOY %d/%d" % [amount, maximum]
+			label_color = Color("c7a8ff")
+		draw_string(font, position + Vector2(-64.0, 76.0), label, HORIZONTAL_ALIGNMENT_CENTER, 128.0, 12, label_color)
