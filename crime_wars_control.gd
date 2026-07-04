@@ -1,6 +1,26 @@
 extends "res://force_control.gd"
 ## Canonical build controls for the MoonGoons economy and Command Capacity systems.
 
+const PREP_WINDOW_SECONDS: float = 45.0
+
+func _setup_scene(scene: Node) -> void:
+	super._setup_scene(scene)
+	scene.call("flash", "PREPARATION WINDOW // 00:45 to establish a precinct before hostile operations activate.", 4.0)
+
+func _update_protection(scene: Node) -> void:
+	var deployed: bool = bool(scene.get_meta("race_selected", false)) or bool(scene.get_meta("custom_match", false))
+	if not deployed or float(scene.get("mission_clock")) < PREP_WINDOW_SECONDS:
+		scene.set("enemy_wave_clock", FREEZE_CLOCK)
+		scene.set_meta("protected_prep", true)
+		_lock_enemy_units(scene)
+		return
+	if bool(scene.get_meta("protected_prep", false)):
+		scene.set_meta("protected_prep", false)
+		_unlock_enemy_units(scene)
+		scene.set("enemy_wave_clock", 10000.0)
+		scene.call("flash", "HOSTILE ASSAULT ACTIVE // Secure districts and protect the Command Nexus.", 4.0)
+		_play("alert")
+
 func _input(event: InputEvent) -> void:
 	super._input(event)
 	if _picker_open() or not (event is InputEventKey):
