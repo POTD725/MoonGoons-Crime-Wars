@@ -80,10 +80,10 @@ func _update_production_queues(delta: float) -> void:
 func _launch_queued_unit(producer: Dictionary, entry: Dictionary, remaining_after_launch: int) -> void:
 	var launch_index: int = int(mission_clock * 10.0) % 6
 	var angle: float = -0.35 + float(launch_index) * 0.48
-	var spawn_position: Vector2 = producer.get("pos", Vector2.ZERO) as Vector2
-	spawn_position += Vector2.from_angle(angle) * 112.0
+	var producer_position: Vector2 = producer.get("pos", Vector2.ZERO) as Vector2
+	var spawn_position: Vector2 = producer_position + Vector2.from_angle(angle) * 112.0
 	var unit: Dictionary = _spawn_unit(str(entry.get("kind", "deputy")), AUTHORITY, spawn_position)
-	var fallback_rally: Vector2 = producer.get("pos", Vector2.ZERO) as Vector2 + Vector2(170.0, 68.0)
+	var fallback_rally: Vector2 = producer_position + Vector2(170.0, 68.0)
 	unit["rally_target"] = producer.get("rally_point", fallback_rally) as Vector2
 	unit["rally_pending"] = true
 	unit["action_state"] = "deploying"
@@ -101,11 +101,12 @@ func _spawn_enemy_wave() -> void:
 		count = 4
 	elif GameDifficulty.active_id == "nightmare":
 		count = 5
+	var relay_position: Vector2 = relay.get("pos", Vector2.ZERO) as Vector2
 	for index in range(count):
 		var angle: float = float(index) * TAU / float(maxi(1, count))
 		var offset: Vector2 = Vector2.from_angle(angle) * 135.0
 		var kind: String = "hacker" if index % 3 == 2 else "raider"
-		enemy_reinforcement_queue.append({"kind":kind, "pos":relay.get("pos", Vector2.ZERO) as Vector2 + offset})
+		enemy_reinforcement_queue.append({"kind":kind, "pos":relay_position + offset})
 	flash("Syndicate response queued // %d hostile contacts deploy 10 seconds apart." % enemy_reinforcement_queue.size(), 3.2)
 	_sound("alert")
 
@@ -117,7 +118,8 @@ func _update_enemy_reinforcement_queue(delta: float) -> void:
 		return
 	var entry: Dictionary = enemy_reinforcement_queue[0] as Dictionary
 	enemy_reinforcement_queue.remove_at(0)
-	_spawn_unit(str(entry.get("kind", "raider")), SYNDICATE, entry.get("pos", Vector2.ZERO) as Vector2)
+	var enemy_position: Vector2 = entry.get("pos", Vector2.ZERO) as Vector2
+	_spawn_unit(str(entry.get("kind", "raider")), SYNDICATE, enemy_position)
 	enemy_reinforcement_timer = SPAWN_INTERVAL_SECONDS
 	flash("Syndicate contact deployed // %d hostile contact(s) still queued." % enemy_reinforcement_queue.size(), 1.8)
 
