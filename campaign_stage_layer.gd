@@ -29,7 +29,7 @@ func _campaign_objective_text() -> String:
 		"CW-002":
 			return "CW-002 // Recover and return 80 Intel from gold Evidence Caches."
 		"CW-003":
-			return "CW-003 // Build 3 Power Relays and protect them for 75 seconds."
+			return "CW-003 // Build 3 Communications Relays and hold the district for 120 seconds."
 		_:
 			return "Complete the current operation."
 
@@ -45,7 +45,7 @@ func _check_mission_end() -> void:
 			if intel >= 80:
 				_finish_campaign_stage(true)
 		"CW-003":
-			if _completed_power_relays() >= 3 and mission_clock >= 75.0:
+			if _completed_power_relays() >= 3 and mission_clock >= 120.0:
 				_finish_campaign_stage(true)
 
 func _completed_power_relays() -> int:
