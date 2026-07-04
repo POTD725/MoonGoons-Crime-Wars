@@ -1,7 +1,21 @@
 extends "res://command_surface.gd"
-## Input bridge for targetable air support.
+## Input bridge for targetable air support. The legacy support panels stay hidden; the grouped Command Console is the primary UI.
 
 var air_support_targeting: bool = false
+
+func _ready() -> void:
+	super._ready()
+	if support_panel != null:
+		support_panel.visible = false
+	if industry_panel != null:
+		industry_panel.visible = false
+
+func _process(delta: float) -> void:
+	super._process(delta)
+	if support_panel != null:
+		support_panel.visible = false
+	if industry_panel != null:
+		industry_panel.visible = false
 
 func _input(event: InputEvent) -> void:
 	if air_support_targeting:
