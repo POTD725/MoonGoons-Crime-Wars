@@ -1,0 +1,19 @@
+# Godot editor/import cache
+.godot/
+*.uid
+*.import
+
+# Runtime-generated fallback SVG cache
+assets/graphics/generated/
+
+# Local exports and packaged builds
+builds/
+exports/
+*.pck
+*.wasm
+*.zip
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
