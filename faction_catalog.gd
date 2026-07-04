@@ -1,10 +1,23 @@
 extends Node
+## The three major forces of MoonGoons: Crime Wars.
+## Internal ids preserve the existing game wiring while the player-facing factions follow the design canon.
 
 const DATA: Dictionary = {
-	"authority": {"name":"MOONGOONS AUTHORITY", "label":"MOONGOONS AUTHORITY", "accent":"#8fe9ff", "hero":"Chief Nova", "rival":"lunar_cartel", "subtitle":"Order under lunar pressure", "style":"POLICE PRECINCT // shielded rooms, disciplined officers, steady expansion.", "construction":"Builder Drones assemble standardized precinct modules.", "passive":{"supplies":2}},
-	"lunar_cartel": {"name":"LUNAR CARTEL", "label":"LUNAR CARTEL", "accent":"#ff79c6", "hero":"Vexa Null", "rival":"authority", "subtitle":"Profit moves faster than law", "style":"HIDDEN DEPOT // neon modules, fast runners, contraband logistics.", "construction":"Contraband Riggers deploy lightweight hideout modules in a hurry.", "passive":{"credits":8,"intel":1}},
-	"null_choir": {"name":"NULL CHOIR", "label":"NULL CHOIR", "accent":"#72f2bd", "hero":"Nyx Relay", "rival":"hollow_fang", "subtitle":"The signal wants to grow", "style":"LIVING NETWORK // recursive spires, long-range echoes, data-born structures.", "construction":"Signal Seeds grow structures from captured data.", "passive":{"intel":4}},
-	"hollow_fang": {"name":"HOLLOW FANG CLAN", "label":"HOLLOW FANG CLAN", "accent":"#ff9b62", "hero":"Nash Vanta", "rival":"null_choir", "subtitle":"Board first. Negotiate later.", "style":"SCRAP WAR-CAMP // welded plates, boarding brutes, heavy close pressure.", "construction":"Scrapwrights weld durable war-camp structures quickly from salvage.", "passive":{"supplies":5,"credits":3}}
+	"authority": {
+		"name":"LUNAR PEACEKEEPERS", "label":"LUNAR PEACEKEEPERS", "accent":"#8fe9ff", "hero":"Chief Nova", "rival":"syndicate",
+		"subtitle":"Order under lunar pressure", "style":"SECURITY PRECINCT // disciplined squads, defense grids, investigations, and orbital response.",
+		"construction":"Builder Drones assemble standardized precinct modules and establish security zones.", "passive":{"supplies":2, "command":2}
+	},
+	"lunar_cartel": {
+		"name":"THE SYNDICATE", "label":"THE SYNDICATE", "accent":"#ff79c6", "hero":"Vexa Null", "rival":"authority",
+		"subtitle":"The law is a decorative suggestion", "style":"HIDDEN NETWORK // raids, sabotage, black-market logistics, hacked defenses, and ambush routes.",
+		"construction":"Contraband Riggers deploy hideouts through illicit supply channels and underground routes.", "passive":{"credits":8, "intel":1}
+	},
+	"null_choir": {
+		"name":"THE NULLBORN", "label":"THE NULLBORN", "accent":"#72f2bd", "hero":"Nyx Relay", "rival":"authority",
+		"subtitle":"The Moon remembers its experiments", "style":"CORRUPTED NETWORK // infected territory, unstable energy, mutations, and broken-machine evolution.",
+		"construction":"Nullborn growths consume abandoned infrastructure and corrupted power systems.", "passive":{"intel":4, "alloy":1}
+	}
 }
 const RACES: Dictionary = DATA
 
@@ -14,7 +27,7 @@ func get_rival(race_id: String) -> String:
 
 func label_for(race_id: String) -> String:
 	var entry: Dictionary = DATA.get(race_id, DATA["authority"])
-	return str(entry.get("label", "MOONGOONS AUTHORITY"))
+	return str(entry.get("label", "LUNAR PEACEKEEPERS"))
 
 func get_construction(race_id: String) -> String:
 	var entry: Dictionary = DATA.get(race_id, DATA["authority"])
