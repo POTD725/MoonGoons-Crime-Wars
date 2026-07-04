@@ -6,6 +6,7 @@ var root: Node
 var root_id: int = -1
 var chosen_race: String = "authority"
 var chosen_rival: String = "lunar_cartel"
+var picker_resolved: bool = false
 var picker: Control
 var detail_panel: Panel
 var detail_title: Label
@@ -29,8 +30,18 @@ func _process(_delta: float) -> void:
 		chosen_rival = MatchState.opposing_race
 		GameDifficulty.set_level(MatchState.level_id)
 		root.set_meta("custom_match", true)
+		root.set_meta("race_selected", true)
+		root.set_meta("faction_picker_active", false)
+		picker_resolved = true
+		picker.visible = false
 		_tag_entities()
 		root.call("flash", "CUSTOM MATCH // " + MatchState.selected_map + " // " + MatchState.selected_mode, 4.0)
+		return
+	if picker_resolved:
+		root.set_meta("race_selected", true)
+		root.set_meta("faction_picker_active", false)
+		picker.visible = false
+		_tag_entities()
 		return
 	chosen_race = "authority"
 	chosen_rival = "lunar_cartel"
@@ -42,16 +53,19 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _show_picker() -> void:
-	if root == null or picker.visible:
+	if root == null:
 		return
+	root.set_meta("faction_picker_active", true)
 	picker.visible = true
 	get_tree().paused = true
 
 func _choose(race_id: String) -> void:
 	chosen_race = race_id
 	chosen_rival = RaceCatalog.get_rival(race_id)
+	picker_resolved = true
 	_tag_entities()
 	root.set_meta("race_selected", true)
+	root.set_meta("faction_picker_active", false)
 	root.call("flash", "FACTION // " + RaceCatalog.label_for(race_id), 3.0)
 	picker.visible = false
 	get_tree().paused = false
@@ -67,6 +81,7 @@ func _tag_entities() -> void:
 func _reset_mission(race_id: String, rival_id: String) -> void:
 	chosen_race = race_id
 	chosen_rival = rival_id
+	picker_resolved = true
 	_tag_entities()
 
 func _build_picker() -> void:
@@ -112,7 +127,7 @@ func _build_picker() -> void:
 	picker.add_child(hint)
 
 	var ids: Array[String] = ["authority", "lunar_cartel", "null_choir", "hollow_fang"]
-	for index: int in ids.size():
+	for index in range(ids.size()):
 		_add_faction_card(ids[index], index)
 	_build_detail_panel()
 	_show_detail("authority")
@@ -122,8 +137,8 @@ func _add_faction_card(race_id: String, index: int) -> void:
 	var data: Dictionary = RaceCatalog.RACES[race_id]
 	var accent: Color = Color(str(data.get("accent", "#8fe9ff")))
 	var card: Button = Button.new()
-	card.position = Vector2(26.0 + float(index) * 388.0, 145.0)
-	card.size = Vector2(366.0, 520.0)
+	card.position = Vector2(26.0 + float(index) * 388.0, 150.0)
+	card.size = Vector2(366.0, 500.0)
 	card.tooltip_text = _tooltip_for(race_id)
 	card.add_theme_stylebox_override("normal", _card_style(accent, 0.14, 2))
 	card.add_theme_stylebox_override("hover", _card_style(accent, 0.27, 4))
@@ -138,7 +153,7 @@ func _add_faction_card(race_id: String, index: int) -> void:
 	name_label.position = Vector2(14, 13)
 	name_label.size = Vector2(338, 30)
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	name_label.add_theme_font_size_override("font_size", 21)
+	name_label.add_theme_font_size_override("font_size", 18)
 	name_label.add_theme_color_override("font_color", accent.lightened(0.22))
 	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(name_label)
@@ -174,17 +189,17 @@ func _add_faction_card(race_id: String, index: int) -> void:
 	var method_label: Label = Label.new()
 	method_label.text = "BUILD METHOD\n" + str(data.get("construction", ""))
 	method_label.position = Vector2(22, 342)
-	method_label.size = Vector2(322, 94)
+	method_label.size = Vector2(322, 82)
 	method_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	method_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	method_label.add_theme_font_size_override("font_size", 13)
+	method_label.add_theme_font_size_override("font_size", 12)
 	method_label.add_theme_color_override("font_color", Color("bbcee1"))
 	method_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(method_label)
 
 	var deploy_label: Label = Label.new()
 	deploy_label.text = "HOVER FOR DETAILS  •  CLICK TO DEPLOY"
-	deploy_label.position = Vector2(12, 474)
+	deploy_label.position = Vector2(12, 454)
 	deploy_label.size = Vector2(342, 25)
 	deploy_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	deploy_label.add_theme_font_size_override("font_size", 12)
@@ -194,8 +209,8 @@ func _add_faction_card(race_id: String, index: int) -> void:
 
 func _build_detail_panel() -> void:
 	detail_panel = Panel.new()
-	detail_panel.position = Vector2(72, 700)
-	detail_panel.size = Vector2(1456, 138)
+	detail_panel.position = Vector2(72, 682)
+	detail_panel.size = Vector2(1456, 160)
 	detail_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	picker.add_child(detail_panel)
 	detail_title = Label.new()
@@ -205,7 +220,7 @@ func _build_detail_panel() -> void:
 	detail_panel.add_child(detail_title)
 	detail_body = Label.new()
 	detail_body.position = Vector2(24, 49)
-	detail_body.size = Vector2(1408, 75)
+	detail_body.size = Vector2(1408, 92)
 	detail_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	detail_body.add_theme_font_size_override("font_size", 15)
 	detail_body.add_theme_color_override("font_color", Color("eaf5ff"))
