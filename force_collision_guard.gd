@@ -10,3 +10,23 @@ func _blocked_by_buildings(point: Vector2, _clearance: float) -> bool:
 		if Rect2(position - size * 0.5, size).grow(5.0).has_point(point):
 			return true
 	return false
+
+func _nearest_authority(unit: Dictionary) -> Dictionary:
+	var best: Dictionary = {}
+	var best_distance: float = INF
+	var position: Vector2 = unit.get("pos", Vector2.ZERO) as Vector2
+	for entity: Dictionary in units:
+		if str(entity.get("team", "")) != AUTHORITY or bool(entity.get("stealth", false)):
+			continue
+		var distance_value: float = position.distance_to(entity.get("pos", Vector2.ZERO) as Vector2)
+		if distance_value < best_distance:
+			best = entity
+			best_distance = distance_value
+	for building: Dictionary in buildings:
+		if str(building.get("team", "")) != AUTHORITY:
+			continue
+		var distance_value: float = position.distance_to(building.get("pos", Vector2.ZERO) as Vector2)
+		if distance_value < best_distance:
+			best = building
+			best_distance = distance_value
+	return best
