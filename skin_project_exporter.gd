@@ -10,10 +10,11 @@ func _ready() -> void:
 func _mirror_skin_library() -> void:
 	if SkinBank == null:
 		return
-	SkinBank.ensure_all_assets()
-	for kind_value in SkinBank.CATALOG.keys():
+	SkinBank.call("ensure_all_assets")
+	var catalog: Dictionary = SkinBank.get("CATALOG") as Dictionary
+	for kind_value in catalog.keys():
 		var kind: String = str(kind_value)
-		var info: Dictionary = SkinBank.CATALOG[kind] as Dictionary
+		var info: Dictionary = catalog[kind] as Dictionary
 		var group_name: String = str(info.get("group", "misc"))
 		var target_path: String = PROJECT_ROOT + group_name + "/" + kind + ".svg"
 		if FileAccess.file_exists(target_path):
