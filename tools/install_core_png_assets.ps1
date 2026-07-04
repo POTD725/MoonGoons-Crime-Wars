@@ -10,7 +10,7 @@ if (-not (Test-Path $ProjectPath)) {
     throw "Project folder not found: $ProjectPath"
 }
 if (-not (Test-Path $AssetZip)) {
-    throw "Asset ZIP not found: $AssetZip"
+    throw "Asset ZIP not found: $AssetZip`nDownload the ZIP from this chat first, then save it with this exact filename in Downloads."
 }
 
 $temp = Join-Path $env:TEMP ("MoonGoonsCoreArt_" + [guid]::NewGuid().ToString("N"))
@@ -25,17 +25,35 @@ try {
 
     $destination = Join-Path $ProjectPath "assets\graphics"
     New-Item -ItemType Directory -Path $destination -Force | Out-Null
-    Copy-Item -Path (Join-Path $source "*") -Destination $destination -Recurse -Force
 
-    Write-Host "Core PNG assets installed under: $destination" -ForegroundColor Cyan
-    Get-ChildItem $destination -Recurse -Filter *.png | Select-Object FullName, Length
+    $assetFolders = @("structures", "troops", "defenses", "resources", "environment")
+    foreach ($folder in $assetFolders) {
+        $from = Join-Path $source $folder
+        $to = Join-Path $destination $folder
+        if (Test-Path $from) {
+            New-Item -ItemType Directory -Path $to -Force | Out-Null
+            Copy-Item -Path (Join-Path $from "*.png") -Destination $to -Force
+        }
+    }
+
+    $installed = Get-ChildItem $destination -Recurse -Filter *.png | Where-Object {
+        $_.FullName -match "\\(structures|troops|defenses|resources|environment)\\"
+    }
+    Write-Host "Installed $($installed.Count) core PNG asset(s) under: $destination" -ForegroundColor Cyan
+    $installed | Select-Object FullName, Length
 
     if ($CommitToGitHub) {
         Push-Location $ProjectPath
         try {
-            git add assets/graphics
-            git commit -m "art: add core MoonGoons PNG asset pack"
-            git push origin main
+            git add -- "assets/graphics/structures/*.png" "assets/graphics/troops/*.png" "assets/graphics/defenses/*.png" "assets/graphics/resources/*.png" "assets/graphics/environment/*.png"
+            git diff --cached --quiet
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "No new PNG files needed committing." -ForegroundColor Yellow
+            }
+            else {
+                git commit -m "art: add core MoonGoons PNG asset pack"
+                git push origin main
+            }
         }
         finally {
             Pop-Location
