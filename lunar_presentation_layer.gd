@@ -46,14 +46,14 @@ func _draw_crater_rampart(rect_value: Rect2) -> void:
 	var center: Vector2 = rect_value.get_center()
 	var radius_x: float = rect_value.size.x * 0.43
 	var radius_y: float = rect_value.size.y * 0.52
-	draw_ellipse(center, Vector2(radius_x, radius_y), Color("182033"), Color("9d89c9"))
+	_draw_terrain_ellipse(center, Vector2(radius_x, radius_y), Color("182033"), Color("9d89c9"))
 	for shard_index in range(7):
 		var angle: float = float(shard_index) * TAU / 7.0 + 0.3
 		var shard_center: Vector2 = center + Vector2(cos(angle) * radius_x * 0.72, sin(angle) * radius_y * 0.72)
 		draw_circle(shard_center, 9.0 + float(shard_index % 3) * 3.0, Color("4c3b61"))
-		draw_arc(center, minf(radius_x, radius_y) * 0.55, mission_clock * 0.28, mission_clock * 0.28 + PI * 1.1, 18, Color(0.72, 0.60, 1.0, 0.58), 2.0)
+	draw_arc(center, minf(radius_x, radius_y) * 0.55, mission_clock * 0.28, mission_clock * 0.28 + PI * 1.1, 18, Color(0.72, 0.60, 1.0, 0.58), 2.0)
 
-func draw_ellipse(center: Vector2, radii: Vector2, fill_color: Color, edge_color: Color) -> void:
+func _draw_terrain_ellipse(center: Vector2, radii: Vector2, fill_color: Color, edge_color: Color) -> void:
 	var points: PackedVector2Array = PackedVector2Array()
 	for index in range(25):
 		var angle: float = TAU * float(index) / 24.0
