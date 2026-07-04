@@ -4,7 +4,7 @@ extends Node
 
 const DATA: Dictionary = {
 	"authority": {
-		"name":"LUNAR PEACEKEEPERS", "label":"LUNAR PEACEKEEPERS", "accent":"#8fe9ff", "hero":"Chief Nova", "rival":"syndicate",
+		"name":"LUNAR PEACEKEEPERS", "label":"LUNAR PEACEKEEPERS", "accent":"#8fe9ff", "hero":"Chief Nova", "rival":"lunar_cartel",
 		"subtitle":"Order under lunar pressure", "style":"SECURITY PRECINCT // disciplined squads, defense grids, investigations, and orbital response.",
 		"construction":"Builder Drones assemble standardized precinct modules and establish security zones.", "passive":{"supplies":2, "command":2}
 	},
