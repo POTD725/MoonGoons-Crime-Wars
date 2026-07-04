@@ -26,7 +26,7 @@ func _build() -> void:
 	title.add_theme_color_override("font_color", Color("8fe9ff"))
 	add_child(title)
 	var subtitle: Label = Label.new()
-	subtitle.text = "Configure a local skirmish with CPU opposition. Full human 2v2 through 8v8 sync remains a separate phase."
+	subtitle.text = "Choose a live battlefield. Every map has hard borders, impassable terrain, elevation bands, and its own resource routes."
 	subtitle.position = Vector2(230, 105)
 	subtitle.size = Vector2(1140, 26)
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -34,7 +34,7 @@ func _build() -> void:
 	add_child(subtitle)
 	race_menu = _menu("YOUR FACTION", 235, ["MoonGoons Authority", "Lunar Cartel", "Null Choir", "Hollow Fang"])
 	opponent_menu = _menu("CPU FACTION", 315, ["Lunar Cartel", "MoonGoons Authority", "Null Choir", "Hollow Fang"])
-	map_menu = _menu("BATTLEFIELD", 395, ["Breakwater Split", "Glass Canyon", "Red Dust Basin", "Second Siren"])
+	map_menu = _menu("BATTLEFIELD", 395, ["Nexus Prime", "Black Crater", "Syndicate Docks", "Underhive Sector", "Iron Ridge", "Shatterpoint", "Obsidian Pass", "Null Chapel", "Smuggler's Run", "Shadow Terminal", "Frostline Outpost", "Wreckage Fields"])
 	scenario_menu = _menu("SCENARIO", 475, ["Standard Skirmish", "Resource Rush", "King of the Relay", "Sudden Death"])
 	difficulty_menu = _menu("DIFFICULTY", 555, ["Easy", "Standard", "Hard", "Nightmare"])
 	difficulty_menu.select(1)
@@ -82,7 +82,7 @@ func _menu(label_text: String, y: float, choices: Array[String]) -> OptionButton
 func _refresh(_index: int) -> void:
 	if summary == null:
 		return
-	summary.text = "MATCH BRIEF\n\n%s versus %s\n\nMap: %s\nScenario: %s\nDifficulty: %s\nOpposition: %s\n\nThe local commander controls the chosen faction. Computer players reinforce the hostile side." % [race_menu.get_item_text(race_menu.selected), opponent_menu.get_item_text(opponent_menu.selected), map_menu.get_item_text(map_menu.selected), scenario_menu.get_item_text(scenario_menu.selected), difficulty_menu.get_item_text(difficulty_menu.selected), cpu_menu.get_item_text(cpu_menu.selected)]
+	summary.text = "MATCH BRIEF\n\n%s versus %s\n\nMap: %s\nScenario: %s\nDifficulty: %s\nOpposition: %s\n\nTerrain rules: units cannot leave the battlefield; deep terrain blocks ground movement; climbs are slower; low ground and difficult surfaces change routing; only buildable terrain accepts structures." % [race_menu.get_item_text(race_menu.selected), opponent_menu.get_item_text(opponent_menu.selected), map_menu.get_item_text(map_menu.selected), scenario_menu.get_item_text(scenario_menu.selected), difficulty_menu.get_item_text(difficulty_menu.selected), cpu_menu.get_item_text(cpu_menu.selected)]
 
 func _launch() -> void:
 	var races: Array[String] = ["authority", "lunar_cartel", "null_choir", "hollow_fang"]
