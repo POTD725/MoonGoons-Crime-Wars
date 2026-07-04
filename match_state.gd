@@ -3,7 +3,7 @@ extends Node
 var match_ready: bool = false
 var player_race: String = "authority"
 var opposing_race: String = "lunar_cartel"
-var selected_map: String = "Breakwater Split"
+var selected_map: String = "Nexus Prime"
 var selected_mode: String = "Standard Skirmish"
 var level_id: String = "standard"
 var bots: int = 1
