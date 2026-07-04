@@ -150,6 +150,6 @@ func _refresh_industry_console(scene: Node) -> void:
 		industry_status.text = "Blueprint armed. Left-click clear terrain to place it."
 		return
 	if _producer(scene, "machine_shop").is_empty():
-		industry_status.text = "Build a Machine Shop to produce the armored Bulwark Rover."
+		industry_status.text = "Builders repair damaged structures: select them, then right-click the damage. Build a Machine Shop for Rovers."
 	else:
-		industry_status.text = "Machine Shop online. Select it, right-click terrain for a rally point, then press T."
+		industry_status.text = "Machine Shop online. Rovers: select Shop, right-click rally point, press T. Builders repair via right-click."
