@@ -1,5 +1,5 @@
 extends "res://minimap_hud.gd"
-## Shows resource deposits and live unit queue counts without crowding the command deck.
+## Shows resource deposits, live queues, and live core-art validation without crowding the command deck.
 
 func _refresh() -> void:
 	super._refresh()
@@ -8,7 +8,8 @@ func _refresh() -> void:
 	var total_queued: int = int(game.call("_get_total_pending_spawns")) if game.has_method("_get_total_pending_spawns") else 0
 	var ore_remaining: int = int(game.call("_get_total_resource_amount", "ore")) if game.has_method("_get_total_resource_amount") else 0
 	var intel_remaining: int = int(game.call("_get_total_resource_amount", "evidence")) if game.has_method("_get_total_resource_amount") else 0
-	resource_line.text = "CREDITS %04d  SUPPLIES %03d  INTEL %03d  O2 %03d%%  QUEUE %02d" % [int(game.get("credits")), int(game.get("supplies")), int(game.get("intel")), int(round(float(game.get("oxygen_reserve")))), total_queued]
+	var art_status: String = CoreArtBank.status_text() if CoreArtBank != null else "CORE PNG ART OFFLINE"
+	resource_line.text = "CREDITS %04d  SUPPLIES %03d  INTEL %03d  O2 %03d%%  QUEUE %02d  %s" % [int(game.get("credits")), int(game.get("supplies")), int(game.get("intel")), int(round(float(game.get("oxygen_reserve")))), total_queued, art_status]
 	objective_line.text = _objective_text() + "\nFIELD DEPOSITS // ORE %d  INTEL %d" % [ore_remaining, intel_remaining]
 
 func _refresh_production_for(entity: Dictionary) -> void:
