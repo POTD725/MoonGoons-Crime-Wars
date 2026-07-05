@@ -1,4 +1,4 @@
-extends "res://rts_control_fix.gd"
+extends "res://industry_control.gd"
 ## Transitional production request API.
 ## Controllers use _request_train(scene, kind); the scene owns _train(kind).
 ## _train(scene, kind) remains only as a compatibility bridge for older hotkeys and buttons.
