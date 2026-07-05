@@ -1,9 +1,11 @@
 extends "res://resource_orders_layer.gd"
 
 const PLAYABLE_STAGES: Array[String] = ["CW-001", "CW-002", "CW-003"]
+const CINDER_ROW_HOLD_SECONDS: float = 120.0
 
 var campaign_mission_id: String = "CW-001"
 var campaign_enabled: bool = true
+var relay_hold_clock: float = 0.0
 
 func _ready() -> void:
 	super._ready()
@@ -17,6 +19,17 @@ func _ready() -> void:
 	set_meta("campaign_debrief_active", false)
 	set_meta("campaign_objective", _campaign_objective_text())
 	call_deferred("_announce_campaign_stage")
+
+func _process(delta: float) -> void:
+	super._process(delta)
+	if not campaign_enabled or finished or campaign_mission_id != "CW-003":
+		return
+	if _completed_power_relays() >= 3:
+		relay_hold_clock += delta
+		set_meta("campaign_hold_seconds", relay_hold_clock)
+	else:
+		relay_hold_clock = 0.0
+		set_meta("campaign_hold_seconds", 0.0)
 
 func _next_playable_stage() -> String:
 	for mission_id in PLAYABLE_STAGES:
@@ -32,7 +45,7 @@ func _campaign_objective_text() -> String:
 	match campaign_mission_id:
 		"CW-001": return "CW-001 // Build defenses, gather resources, finish a Tactical Armory, and destroy the hostile relay."
 		"CW-002": return "CW-002 // Recover and return 80 Intel from gold Evidence Caches."
-		"CW-003": return "CW-003 // Build 3 Communications Relays and hold the district for 120 seconds."
+		"CW-003": return "CW-003 // Build 3 Communications Relays, then protect them for 120 seconds."
 		_: return "Complete the current operation."
 
 func _check_mission_end() -> void:
@@ -49,7 +62,7 @@ func _check_mission_end() -> void:
 			if intel >= 80:
 				_finish_campaign_stage(true)
 		"CW-003":
-			if _completed_power_relays() >= 3 and mission_clock >= 120.0:
+			if _completed_power_relays() >= 3 and relay_hold_clock >= CINDER_ROW_HOLD_SECONDS:
 				_finish_campaign_stage(true)
 
 func _completed_power_relays() -> int:
