@@ -1,4 +1,4 @@
-extends "res://industry_control.gd"
+extends "res://production_request_control.gd"
 ## Visual polish for the support console so every option reads as a real clickable control.
 
 func _ready() -> void:
