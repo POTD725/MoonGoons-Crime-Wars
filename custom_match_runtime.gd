@@ -34,7 +34,8 @@ func _process(delta: float) -> void:
 			if _count_player_units(scene) < initial_unit_count:
 				_finish(scene, false, "SUDDEN DEATH // A Peacekeeper unit was lost.")
 		_:
-			if scene.call("_relay") is Dictionary and (scene.call("_relay") as Dictionary).is_empty():
+			var relay: Dictionary = scene.call("_relay") as Dictionary
+			if relay.is_empty():
 				_finish(scene, true, "STANDARD SKIRMISH COMPLETE // Hostile relay destroyed.")
 
 func _start_for_scene(scene: Node) -> void:
