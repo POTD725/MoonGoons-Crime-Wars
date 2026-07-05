@@ -1,5 +1,5 @@
 extends Control
-## Stable local skirmish setup screen.
+## Stable local skirmish setup screen. Uses the three canonical major forces.
 
 var race_menu: OptionButton
 var opponent_menu: OptionButton
@@ -32,8 +32,8 @@ func _build() -> void:
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	subtitle.add_theme_font_size_override("font_size", 15)
 	add_child(subtitle)
-	race_menu = _menu("YOUR FACTION", 235, ["MoonGoons Authority", "Lunar Cartel", "Null Choir", "Hollow Fang"])
-	opponent_menu = _menu("CPU FACTION", 315, ["Lunar Cartel", "MoonGoons Authority", "Null Choir", "Hollow Fang"])
+	race_menu = _menu("YOUR FORCE", 235, ["Lunar Peacekeepers", "The Syndicate", "The Nullborn"])
+	opponent_menu = _menu("CPU FORCE", 315, ["The Syndicate", "Lunar Peacekeepers", "The Nullborn"])
 	map_menu = _menu("BATTLEFIELD", 395, ["Nexus Prime", "Black Crater", "Syndicate Docks", "Underhive Sector", "Iron Ridge", "Shatterpoint", "Obsidian Pass", "Null Chapel", "Smuggler's Run", "Shadow Terminal", "Frostline Outpost", "Wreckage Fields"])
 	scenario_menu = _menu("SCENARIO", 475, ["Standard Skirmish", "Resource Rush", "King of the Relay", "Sudden Death"])
 	difficulty_menu = _menu("DIFFICULTY", 555, ["Easy", "Standard", "Hard", "Nightmare"])
@@ -85,7 +85,7 @@ func _refresh(_index: int) -> void:
 	summary.text = "MATCH BRIEF\n\n%s versus %s\n\nMap: %s\nScenario: %s\nDifficulty: %s\nOpposition: %s\n\nTerrain rules: units cannot leave the battlefield; deep terrain blocks ground movement; climbs are slower; low ground and difficult surfaces change routing; only buildable terrain accepts structures." % [race_menu.get_item_text(race_menu.selected), opponent_menu.get_item_text(opponent_menu.selected), map_menu.get_item_text(map_menu.selected), scenario_menu.get_item_text(scenario_menu.selected), difficulty_menu.get_item_text(difficulty_menu.selected), cpu_menu.get_item_text(cpu_menu.selected)]
 
 func _launch() -> void:
-	var races: Array[String] = ["authority", "lunar_cartel", "null_choir", "hollow_fang"]
+	var races: Array[String] = ["authority", "lunar_cartel", "null_choir"]
 	var player_race: String = races[race_menu.selected]
 	var opponent_race: String = races[opponent_menu.selected]
 	var levels: Array[String] = ["easy", "standard", "hard", "nightmare"]
