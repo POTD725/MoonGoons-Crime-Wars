@@ -3,10 +3,16 @@ extends "res://resource_harvest_fixes.gd"
 const PLAYABLE_STAGES: Array[String] = ["CW-001", "CW-002", "CW-003"]
 
 var campaign_mission_id: String = "CW-001"
+var campaign_enabled: bool = true
 
 func _ready() -> void:
 	super._ready()
+	campaign_enabled = not (MatchState != null and MatchState.is_ready())
+	if not campaign_enabled:
+		set_meta("campaign_mode", false)
+		return
 	campaign_mission_id = _next_playable_stage()
+	set_meta("campaign_mode", true)
 	set_meta("campaign_mission_id", campaign_mission_id)
 	set_meta("campaign_debrief_active", false)
 	set_meta("campaign_objective", _campaign_objective_text())
@@ -24,16 +30,14 @@ func _announce_campaign_stage() -> void:
 
 func _campaign_objective_text() -> String:
 	match campaign_mission_id:
-		"CW-001":
-			return "CW-001 // Build defenses, gather resources, finish a Tactical Armory, and destroy the hostile relay."
-		"CW-002":
-			return "CW-002 // Recover and return 80 Intel from gold Evidence Caches."
-		"CW-003":
-			return "CW-003 // Build 3 Communications Relays and hold the district for 120 seconds."
-		_:
-			return "Complete the current operation."
+		"CW-001": return "CW-001 // Build defenses, gather resources, finish a Tactical Armory, and destroy the hostile relay."
+		"CW-002": return "CW-002 // Recover and return 80 Intel from gold Evidence Caches."
+		"CW-003": return "CW-003 // Build 3 Communications Relays and hold the district for 120 seconds."
+		_: return "Complete the current operation."
 
 func _check_mission_end() -> void:
+	if not campaign_enabled or bool(get_meta("custom_match", false)):
+		return
 	if _home_nexus().is_empty():
 		_finish_campaign_stage(false)
 		return
