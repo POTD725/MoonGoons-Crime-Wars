@@ -57,7 +57,7 @@ func _build() -> void:
 	back.text = "RETURN TO MAIN MISSION"
 	back.position = Vector2(760, 650)
 	back.size = Vector2(440, 46)
-	back.pressed.connect(func(): get_tree().change_scene_to_file("res://main.tscn"))
+	back.pressed.connect(func() -> void: get_tree().change_scene_to_file("res://main.tscn"))
 	add_child(back)
 	for menu: OptionButton in [race_menu, opponent_menu, map_menu, scenario_menu, difficulty_menu, cpu_menu]:
 		menu.item_selected.connect(_refresh)
@@ -85,9 +85,10 @@ func _refresh(_index: int) -> void:
 	summary.text = "MATCH BRIEF\n\n%s versus %s\n\nMap: %s\nScenario: %s\nDifficulty: %s\nOpposition: %s\n\nTerrain rules: units cannot leave the battlefield; deep terrain blocks ground movement; climbs are slower; low ground and difficult surfaces change routing; only buildable terrain accepts structures." % [race_menu.get_item_text(race_menu.selected), opponent_menu.get_item_text(opponent_menu.selected), map_menu.get_item_text(map_menu.selected), scenario_menu.get_item_text(scenario_menu.selected), difficulty_menu.get_item_text(difficulty_menu.selected), cpu_menu.get_item_text(cpu_menu.selected)]
 
 func _launch() -> void:
-	var races: Array[String] = ["authority", "lunar_cartel", "null_choir"]
-	var player_race: String = races[race_menu.selected]
-	var opponent_race: String = races[opponent_menu.selected]
+	var player_ids: Array[String] = ["authority", "lunar_cartel", "null_choir"]
+	var opponent_ids: Array[String] = ["lunar_cartel", "authority", "null_choir"]
+	var player_race: String = player_ids[race_menu.selected]
+	var opponent_race: String = opponent_ids[opponent_menu.selected]
 	var levels: Array[String] = ["easy", "standard", "hard", "nightmare"]
 	MatchState.set_match(player_race, opponent_race, map_menu.get_item_text(map_menu.selected), scenario_menu.get_item_text(scenario_menu.selected), levels[difficulty_menu.selected], cpu_menu.selected + 1)
 	get_tree().change_scene_to_file("res://main.tscn")
