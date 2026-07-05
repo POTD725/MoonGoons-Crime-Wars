@@ -1,4 +1,4 @@
-extends "res://resource_harvest_fixes.gd"
+extends "res://resource_orders_layer.gd"
 
 const PLAYABLE_STAGES: Array[String] = ["CW-001", "CW-002", "CW-003"]
 
