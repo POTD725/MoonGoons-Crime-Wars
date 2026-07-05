@@ -16,7 +16,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	var current_scene: Node = get_tree().current_scene
-	if current_scene == null or not current_scene.has_meta("campaign_mission_id"):
+	if current_scene == null or bool(current_scene.get_meta("custom_match", false)) or not current_scene.has_meta("campaign_mission_id"):
 		panel.visible = false
 		return
 	if not bool(current_scene.get("finished")) or not bool(current_scene.get("victory")):
