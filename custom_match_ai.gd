@@ -2,6 +2,8 @@ extends Node
 ## Lightweight CPU pressure for Custom Games.
 ## It creates paced enemy waves from the hostile relay and scales with selected difficulty and bot count.
 
+const MAX_HOSTILE_UNITS: int = 42
+
 var active_scene_id: int = -1
 var wave_clock: float = 0.0
 var wave_index: int = 0
@@ -43,8 +45,14 @@ func _spawn_wave(scene: Node) -> void:
 	var relay: Dictionary = scene.call("_relay") as Dictionary
 	if relay.is_empty():
 		return
+	var active_hostiles: int = _hostile_unit_count(scene)
+	var capacity: int = MAX_HOSTILE_UNITS - active_hostiles
+	if capacity <= 0:
+		scene.call("flash", "SYNDICATE NETWORK HOLDING // hostile force cap reached.", 1.4)
+		return
 	var relay_position: Vector2 = relay.get("pos", Vector2.ZERO) as Vector2
-	var count: int = mini(12, 2 + bot_count + wave_index)
+	var requested_count: int = mini(12, 2 + bot_count + wave_index)
+	var count: int = mini(requested_count, capacity)
 	for index in range(count):
 		var angle: float = TAU * float(index) / float(maxi(1, count))
 		var offset: Vector2 = Vector2.from_angle(angle) * (125.0 + float(index % 3) * 24.0)
@@ -57,3 +65,10 @@ func _spawn_wave(scene: Node) -> void:
 				unit["target"] = nexus.get("pos", Vector2.ZERO) as Vector2
 	wave_index = mini(wave_index + 1, 6)
 	scene.call("flash", "SYNDICATE WAVE %d // %d hostile contacts deployed." % [wave_index, count], 2.0)
+
+func _hostile_unit_count(scene: Node) -> int:
+	var count: int = 0
+	for unit: Dictionary in scene.get("units") as Array:
+		if str(unit.get("team", "")) == "syndicate" and bool(unit.get("ready", true)):
+			count += 1
+	return count
