@@ -1,5 +1,6 @@
 extends "res://faction_controller_match.gd"
 ## Three-force faction picker: Lunar Peacekeepers, The Syndicate, and The Nullborn.
+## The Custom Game War Room is intentionally visible on this first screen.
 
 func _build_picker() -> void:
 	var canvas: CanvasLayer = CanvasLayer.new()
@@ -35,7 +36,7 @@ func _build_picker() -> void:
 	picker.add_child(subtitle)
 
 	var hint: Label = Label.new()
-	hint.text = "Each force has a distinct economy, construction method, battlefield rhythm, and late-game plan. Click a card to deploy."
+	hint.text = "Campaign: click a force to deploy.  Custom Game: open the War Room below to choose a map, CPU force, difficulty, and scenario."
 	hint.position = Vector2(80.0, 102.0)
 	hint.size = Vector2(1440.0, 22.0)
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -47,8 +48,36 @@ func _build_picker() -> void:
 	for index in range(ids.size()):
 		_add_three_force_card(ids[index], index)
 	_build_detail_panel()
+	_add_custom_game_button()
 	_show_detail("authority")
 	picker.visible = false
+
+func _add_custom_game_button() -> void:
+	var button: Button = Button.new()
+	button.text = "OPEN CUSTOM GAME WAR ROOM"
+	button.position = Vector2(525.0, 850.0)
+	button.size = Vector2(550.0, 38.0)
+	button.tooltip_text = "Choose a battlefield, CPU force, difficulty, bot count, and scenario."
+	button.add_theme_font_size_override("font_size", 15)
+	button.add_theme_color_override("font_color", Color("eaf5ff"))
+	button.add_theme_stylebox_override("normal", _card_style(Color("efc75e"), 0.20, 2))
+	button.add_theme_stylebox_override("hover", _card_style(Color("ffdc77"), 0.34, 3))
+	button.add_theme_stylebox_override("pressed", _card_style(Color("ffdc77"), 0.44, 4))
+	button.pressed.connect(_open_custom_game)
+	picker.add_child(button)
+
+func _open_custom_game() -> void:
+	if MatchState != null:
+		MatchState.clear_custom_match()
+	picker_resolved = false
+	picker.visible = false
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://custom_game.tscn")
+
+func _choose(race_id: String) -> void:
+	if MatchState != null:
+		MatchState.clear_custom_match()
+	super._choose(race_id)
 
 func _add_three_force_card(race_id: String, index: int) -> void:
 	var data: Dictionary = RaceCatalog.RACES[race_id] as Dictionary
