@@ -9,11 +9,10 @@ var relay_hold_clock: float = 0.0
 
 func _ready() -> void:
 	super._ready()
-	if MatchState != null and MatchState.is_ready():
+	if MatchState != null and MatchState.is_custom_match_active():
 		campaign_enabled = false
 		set_meta("campaign_mode", false)
 		set_meta("custom_match", true)
-		MatchState.take_ready()
 		return
 	campaign_enabled = true
 	campaign_mission_id = _next_playable_stage()
