@@ -8,7 +8,6 @@ config/features=PackedStringArray("4.7")
 
 [autoload]
 
-DevCheats="*res://dev_console_light.gd"
 CampaignData="*res://story_campaign.gd"
 GameProfile="*res://game_profile.gd"
 RuntimeGuard="*res://runtime_safety_guard.gd"
