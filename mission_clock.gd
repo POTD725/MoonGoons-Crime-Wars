@@ -23,6 +23,9 @@ func _process(_delta: float) -> void:
 		canvas.visible = false
 		watched_scene_id = -1
 		return
+	if bool(scene.get_meta("faction_picker_active", false)) or bool(scene.get_meta("campaign_debrief_active", false)):
+		canvas.visible = false
+		return
 	if scene.get("enemy_wave_clock") == null or scene.get("mission_clock") == null:
 		canvas.visible = false
 		return
@@ -36,7 +39,7 @@ func _process(_delta: float) -> void:
 	var deployed: bool = bool(scene.get_meta("race_selected", false)) or bool(scene.get_meta("custom_match", false))
 	if not deployed:
 		scene.set("enemy_wave_clock", HOLD_CLOCK_VALUE)
-		_update_display(ASSAULT_INTERVAL_SECONDS, "ASSAULT TIMER ARMED // SELECT A FACTION", Color("efc75e"))
+		canvas.visible = false
 		return
 	var elapsed: float = float(scene.get("mission_clock"))
 	if elapsed >= next_assault_at:
