@@ -1,6 +1,8 @@
 extends Node
+## One-shot Custom Game setup plus a session marker that survives the handoff into main.tscn.
 
 var match_ready: bool = false
+var custom_match_active: bool = false
 var player_race: String = "authority"
 var opposing_race: String = "lunar_cartel"
 var selected_map: String = "Nexus Prime"
@@ -17,6 +19,7 @@ func set_match(race_id: String, opponent_id: String, map_label: String, mode_lab
 	bots = clampi(bot_count, 1, 7)
 	GameDifficulty.set_level(level_id)
 	match_ready = true
+	custom_match_active = true
 
 func is_ready() -> bool:
 	return match_ready
@@ -26,3 +29,10 @@ func take_ready() -> bool:
 		return false
 	match_ready = false
 	return true
+
+func is_custom_match_active() -> bool:
+	return custom_match_active
+
+func clear_custom_match() -> void:
+	match_ready = false
+	custom_match_active = false
